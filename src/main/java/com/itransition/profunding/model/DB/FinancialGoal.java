@@ -27,4 +27,17 @@ public class FinancialGoal {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project rootProject;
+
+    @Column(name = "target_amount")
+    private Long targetAmount;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "deadline_date")
+    private Date deadlineDate;
+
+    @Column(name = "financial_goal_status")
+    @Enumerated(EnumType.STRING)
+    private FinancialGoalStatus financialGoalStatus;
 }
