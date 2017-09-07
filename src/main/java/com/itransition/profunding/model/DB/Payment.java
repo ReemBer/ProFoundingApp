@@ -33,4 +33,7 @@ public class Payment {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project rootProject;
+
+    @Column(name = "amount")
+    private Long amount;
 }
