@@ -26,4 +26,7 @@ public class Tag {
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Project> projects;
+
+    @Column(name = "tag_name")
+    private String tagName;
 }
