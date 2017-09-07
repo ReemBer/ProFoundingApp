@@ -24,6 +24,15 @@ public class Achievement {
     @Column(name = "achievement_id")
     private Long id;
 
-    @ManyToMany(mappedBy = "achievements", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "image_link")
+    private String imageLink;
+
+    @ManyToMany(mappedBy = "achievements", fetch = FetchType.LAZY)
     private Set<User> users;
 }
