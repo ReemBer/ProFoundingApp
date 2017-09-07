@@ -13,9 +13,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class TokenPayload {
 
     private Long userId;
-    private Long expiration;
+    private long expiration;
+
+    public TokenPayload(final Long userId, final long expiration) {
+        this.userId = userId;
+        this.expiration = expiration;
+    }
 }
