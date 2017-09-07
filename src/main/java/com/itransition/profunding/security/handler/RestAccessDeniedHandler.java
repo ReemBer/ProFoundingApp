@@ -18,7 +18,7 @@ import java.io.IOException;
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     @Resource
-    Environment environment;
+    private Environment environment;
 
     private static final String ACCESS_DENIED_MESSAGE = "security.access_denied.message";
 

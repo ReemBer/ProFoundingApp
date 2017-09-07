@@ -1,4 +1,4 @@
-package com.itransition.profunding.config;
+package com.itransition.profunding;
 
 import com.itransition.profunding.security.SecurityConfiguration;
 import org.springframework.boot.SpringApplication;
