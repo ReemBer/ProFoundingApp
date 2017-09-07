@@ -66,4 +66,9 @@ public class User {
 
     @OneToMany(mappedBy = "userAuthor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_project_news", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_news_id"))
+    private Set<ProjectNews> projectNews;
 }

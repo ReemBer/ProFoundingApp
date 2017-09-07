@@ -3,6 +3,7 @@ package com.itransition.profunding.model.DB;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author v.tarasevich
@@ -32,4 +33,7 @@ public class ProjectNews {
 
     @Column(name = "text")
     private String text;
+
+    @ManyToMany(mappedBy = "projectNews", fetch = FetchType.LAZY)
+    private Set<User> targetUsers;
 }
