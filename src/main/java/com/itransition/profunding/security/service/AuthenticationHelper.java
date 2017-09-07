@@ -27,26 +27,28 @@ import java.util.Objects;
  */
 @Component
 @RequiredArgsConstructor
-@PropertySource("classpath:custom.properties")
 public class AuthenticationHelper {
 
     private final static Logger logger = LoggerFactory.getLogger(AuthenticationHelper.class);
 
-    private final String SECRET = "security.token.secret";
+    public static final String AUTHENTICATION_TOKEN_HEADER = "security.authentication.token.header";
 
-    private Long tokenExpirationTime = 3600L; //In seconds
-
-    private ObjectMapper objectMapper;
+    private static final String AUTHENTICATION_TOKEN_EXPIRATION_TIME = "security.authentication.token.expiration_time";
+    private static final String AUTHENTICATION_TOKEN_GENERATION_SECRET = "security.authentication.token.generation.secret";
 
     @Resource
     private Environment environment;
 
+
+    private ObjectMapper objectMapper;
+
+
     public String generateToken(final Long userId) {
-        logger.debug(environment.getProperty(SECRET));
+        logger.debug(environment.getProperty(AUTHENTICATION_TOKEN_GENERATION_SECRET));
         try {
             TokenPayload payload = getPayload(userId);
             String token = this.objectMapper.writeValueAsString(payload);
-            String secret = environment.getProperty(SECRET);
+            String secret = environment.getProperty(AUTHENTICATION_TOKEN_GENERATION_SECRET);
             return JwtHelper.encode(token, new MacSigner(secret)).getEncoded();
         } catch (JsonProcessingException e) {
             logger.error(String.format("Error generating token.\n%s", e));
@@ -70,7 +72,7 @@ public class AuthenticationHelper {
 
     private void JwtVerification(Jwt jwt) throws InvalidTokenAuthenticationException {
         try {
-            jwt.verifySignature(new MacSigner(environment.getProperty(SECRET)));
+            jwt.verifySignature(new MacSigner(environment.getProperty(AUTHENTICATION_TOKEN_GENERATION_SECRET)));
         } catch (Exception e) {
             logger.error("Token signature verification failure.");
             throw new InvalidTokenAuthenticationException("Token signature verification failure.", e);
@@ -86,6 +88,7 @@ public class AuthenticationHelper {
     }
 
     private TokenPayload getPayload(final Long userId) {
+        Long tokenExpirationTime = Long.parseLong(environment.getProperty(AUTHENTICATION_TOKEN_EXPIRATION_TIME));
         long expirationTime = Instant.now().getEpochSecond() + tokenExpirationTime;
         return new TokenPayload(userId, expirationTime);
     }
