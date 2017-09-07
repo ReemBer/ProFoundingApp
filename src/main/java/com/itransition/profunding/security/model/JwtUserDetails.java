@@ -1,11 +1,15 @@
 package com.itransition.profunding.security.model;
 
+import com.itransition.profunding.model.DB.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,6 +18,7 @@ import java.util.Set;
  * @since 07.09.2017 12:30
  */
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class JwtUserDetails implements UserDetails {
 
@@ -21,6 +26,14 @@ public class JwtUserDetails implements UserDetails {
     private String username;
     private String password;
     private Set<GrantedAuthority> grantedAuthorities;
+
+    public JwtUserDetails(User user) {
+        this.id =  user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.grantedAuthorities = new HashSet<>();
+        this.grantedAuthorities.add(new SimpleGrantedAuthority(user.getUserRole().name()));
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
