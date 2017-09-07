@@ -34,4 +34,7 @@ public class Comment {
     @JoinColumn(name = "root_project")
     @IndexedEmbedded
     private Project rootProject;
+
+    @Column(name = "text")
+    private String text;
 }
