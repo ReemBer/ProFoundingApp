@@ -26,4 +26,10 @@ public class ProjectNews {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project rootProject;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "text")
+    private String text;
 }
