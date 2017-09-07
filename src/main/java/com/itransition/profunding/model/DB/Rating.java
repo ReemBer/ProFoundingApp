@@ -1,34 +1,27 @@
 package com.itransition.profunding.model.DB;
 
 import lombok.*;
-import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * @author v.tarasevich
  * @version 1.0
- * @since 05.09.2017 23:29
+ * @since 07.09.2017 3:20
  */
 @Entity
-@Table(name = "payments")
+@Table(name = "ratings")
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
+public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "payment_id")
+    @Column(name = "rating_id")
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "payer_user")
-    @IndexedEmbedded
-    private User payerUser;
 
     @ManyToOne
     @JoinColumn(name = "project_id")

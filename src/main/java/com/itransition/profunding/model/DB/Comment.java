@@ -4,33 +4,34 @@ import lombok.*;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.Date;
 
 /**
  * @author v.tarasevich
  * @version 1.0
- * @since 05.09.2017 23:29
+ * @since 06.09.2017 2:30
  */
 @Entity
-@Table(name = "payments")
+@Table(name = "comments")
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "payment_id")
+    @Column(name = "comment_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "payer_user")
+    @JoinColumn(name = "user_author")
     @IndexedEmbedded
-    private User payerUser;
+    private User userAuthor;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "root_project")
+    @IndexedEmbedded
     private Project rootProject;
 }
