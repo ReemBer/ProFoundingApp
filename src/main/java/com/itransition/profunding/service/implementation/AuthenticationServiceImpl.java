@@ -1,6 +1,6 @@
 package com.itransition.profunding.service.implementation;
 
-import com.itransition.profunding.model.DB.User;
+import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.AuthUserDto;
 import com.itransition.profunding.model.dto.LoginRequestDto;
 import com.itransition.profunding.model.dto.LoginResponseDto;

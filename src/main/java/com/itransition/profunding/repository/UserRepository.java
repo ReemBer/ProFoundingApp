@@ -1,6 +1,6 @@
 package com.itransition.profunding.repository;
 
-import com.itransition.profunding.model.DB.User;
+import com.itransition.profunding.model.db.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

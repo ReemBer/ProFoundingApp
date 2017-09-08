@@ -1,6 +1,6 @@
 package com.itransition.profunding.security.model;
 
-import com.itransition.profunding.model.DB.User;
+import com.itransition.profunding.model.db.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

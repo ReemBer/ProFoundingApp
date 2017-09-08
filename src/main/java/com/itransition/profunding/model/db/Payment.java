@@ -1,40 +1,38 @@
-package com.itransition.profunding.model.DB;
+package com.itransition.profunding.model.db;
 
 import lombok.*;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @author v.tarasevich
  * @version 1.0
- * @since 06.09.2017 2:30
+ * @since 05.09.2017 23:29
  */
 @Entity
-@Table(name = "comments")
+@Table(name = "payments")
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "comment_id")
+    @Column(name = "payment_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_author")
+    @JoinColumn(name = "payer_user")
     @IndexedEmbedded
-    private User userAuthor;
+    private User payerUser;
 
     @ManyToOne
-    @JoinColumn(name = "root_project")
-    @IndexedEmbedded
+    @JoinColumn(name = "project_id")
     private Project rootProject;
 
-    @Column(name = "text")
-    private String text;
+    @Column(name = "amount")
+    private Long amount;
 }

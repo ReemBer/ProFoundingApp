@@ -1,4 +1,4 @@
-package com.itransition.profunding.model.DB;
+package com.itransition.profunding.model.db;
 
 /**
  * @author v.tarasevich

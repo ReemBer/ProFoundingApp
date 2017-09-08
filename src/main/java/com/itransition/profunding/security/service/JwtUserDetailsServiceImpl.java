@@ -1,6 +1,6 @@
 package com.itransition.profunding.security.service;
 
-import com.itransition.profunding.model.DB.User;
+import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.service.dto.JsonException;
