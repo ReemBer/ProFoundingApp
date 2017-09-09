@@ -1,6 +1,5 @@
 package com.itransition.profunding.service.implementation;
 
-import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.AuthUserDto;
 import com.itransition.profunding.model.dto.LoginRequestDto;
 import com.itransition.profunding.model.dto.LoginResponseDto;
@@ -33,7 +32,6 @@ import java.util.Optional;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
-    private final AuthUserTransformer authUserTransformer;
     private final AuthenticationHelper authenticationHelper;
     private final AuthenticationManager authenticationManager;
 
@@ -43,8 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             UsernamePasswordAuthenticationToken authRequest = makeAuthToken(loginRequestDto);
             final Authentication authResult = this.authenticationManager.authenticate(authRequest);
             if (authResult.isAuthenticated()) {
-                User user = getAuthenticatedUser(authResult);
-                return makeLoginResponse(user);
+                return makeResponse(authResult);
             } else {
                 throw new JsonException("Authentication failed.");
             }
@@ -61,26 +58,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new UsernamePasswordAuthenticationToken(username, password);
     }
 
-    private User getAuthenticatedUser(final Authentication authResult) {
+    private LoginResponseDto makeResponse(final Authentication authResult) {
+        AuthUserDto authUserDto = getAuthUserDto(authResult);
+        String token = this.authenticationHelper.generateToken(authUserDto.getId());
+        return new LoginResponseDto(token, authUserDto);
+    }
+
+    private AuthUserDto getAuthUserDto(final Authentication authResult) {
         JwtUserDetails userDetails = (JwtUserDetails) authResult.getPrincipal();
-        User user = userRepository.findOne(userDetails.getId());
+        AuthUserDto user = userRepository.getAuthUserById(userDetails.getId());
         if(Objects.isNull(user)) {
             throw new JsonException("Such user is not in system.");
         }
         return user;
     }
 
-    private LoginResponseDto makeLoginResponse(final User user) {
-        String token = this.authenticationHelper.generateToken(user.getId());
-        AuthUserDto authUserDto = authUserTransformer.makeDto(user);
-        return new LoginResponseDto(token, authUserDto);
-    }
-
     @Override
     @Transactional(readOnly = true)
     public AuthUserDto getMe() {
         Authentication authentication = SecurityHelper.getAuthenticationWithCheck();
-        User authUser = userRepository.findUserByUsername(authentication.getName());
-        return authUserTransformer.makeDto(authUser);
+        AuthUserDto authUser = userRepository.getAuthUserByUsername(authentication.getName());
+        return authUser;
     }
 }

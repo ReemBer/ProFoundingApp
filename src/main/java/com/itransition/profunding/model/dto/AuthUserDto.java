@@ -1,9 +1,11 @@
 package com.itransition.profunding.model.dto;
 
+import com.itransition.profunding.model.db.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 /**
  * @author v.tarasevich
@@ -13,9 +15,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Component
 public class AuthUserDto {
     private Long id;
     private String username;
     private String role;
+
+    public AuthUserDto(Long id, String username, UserRole role) {
+        this.id = id;
+        this.username = username;
+        this.role = role.name();
+    }
 }
