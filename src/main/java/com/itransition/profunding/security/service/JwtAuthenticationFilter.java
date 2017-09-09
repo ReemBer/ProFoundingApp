@@ -2,7 +2,6 @@ package com.itransition.profunding.security.service;
 
 import com.itransition.profunding.security.handler.RestAuthenticationFailureHandler;
 import com.itransition.profunding.security.model.JwtAuthenticationToken;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
@@ -11,7 +10,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +23,6 @@ import java.util.Optional;
  * @since 07.09.2017 16:08
  */
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-
-    @Resource
-    private Environment environment;
 
     public JwtAuthenticationFilter(final AuthenticationManager authenticationManager) {
         super(request -> true);
@@ -62,7 +57,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     }
 
     private String getToken(HttpServletRequest request) {
-        String authenticationHeaderName = environment.getProperty(AuthenticationHelper.AUTHENTICATION_TOKEN_HEADER);
+        String authenticationHeaderName = AuthenticationHelper.AUTHENTICATION_TOKEN_HEADER;
         return Optional.ofNullable(request.getHeader(authenticationHeaderName))
                        .map(header -> header.substring(7)).orElse(null);
     }
