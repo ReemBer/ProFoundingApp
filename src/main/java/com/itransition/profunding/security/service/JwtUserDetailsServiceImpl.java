@@ -5,6 +5,7 @@ import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.service.dto.JsonException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
+    @Autowired
     private UserRepository userRepository;
 
     @Override
