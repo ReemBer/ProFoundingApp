@@ -7,6 +7,7 @@ import com.itransition.profunding.security.model.TokenPayload;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -31,7 +32,7 @@ public class AuthenticationHelper {
 
     private final static Logger logger = LoggerFactory.getLogger(AuthenticationHelper.class);
 
-    public static final String AUTHENTICATION_TOKEN_HEADER = "security.authentication.token.header";
+    public static final String AUTHENTICATION_TOKEN_HEADER = "Authentication";
 
     private static final String AUTHENTICATION_TOKEN_EXPIRATION_TIME = "security.authentication.token.expiration_time";
     private static final String AUTHENTICATION_TOKEN_GENERATION_SECRET = "security.authentication.token.generation.secret";
@@ -39,14 +40,14 @@ public class AuthenticationHelper {
     @Resource
     private Environment environment;
 
-
+    @Autowired
     private ObjectMapper objectMapper;
 
 
     public String generateToken(final Long userId) {
         logger.debug(environment.getProperty(AUTHENTICATION_TOKEN_GENERATION_SECRET));
         try {
-            TokenPayload payload = getPayload(userId);
+            TokenPayload payload = this.getPayload(userId);
             String token = this.objectMapper.writeValueAsString(payload);
             String secret = environment.getProperty(AUTHENTICATION_TOKEN_GENERATION_SECRET);
             return JwtHelper.encode(token, new MacSigner(secret)).getEncoded();
@@ -88,7 +89,8 @@ public class AuthenticationHelper {
     }
 
     private TokenPayload getPayload(final Long userId) {
-        Long tokenExpirationTime = Long.parseLong(environment.getProperty(AUTHENTICATION_TOKEN_EXPIRATION_TIME));
+        String expTime = environment.getProperty(AUTHENTICATION_TOKEN_EXPIRATION_TIME);
+        Long tokenExpirationTime = Long.parseLong(expTime);
         long expirationTime = Instant.now().getEpochSecond() + tokenExpirationTime;
         return new TokenPayload(userId, expirationTime);
     }
