@@ -45,7 +45,6 @@ public class AuthenticationHelper {
 
 
     public String generateToken(final Long userId) {
-        logger.debug(environment.getProperty(AUTHENTICATION_TOKEN_GENERATION_SECRET));
         try {
             TokenPayload payload = this.getPayload(userId);
             String token = this.objectMapper.writeValueAsString(payload);
