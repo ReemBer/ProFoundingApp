@@ -15,11 +15,11 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     private static final int MAX_AGE = 3600;
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/*")
+    public void addCorsMappings(final CorsRegistry registry) {
+        registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedHeaders("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
                 .allowCredentials(false).maxAge(MAX_AGE);
     }
 }
