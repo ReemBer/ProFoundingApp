@@ -1,7 +1,10 @@
 package com.itransition.profunding.repository;
 
 import com.itransition.profunding.model.db.User;
+import com.itransition.profunding.model.dto.AuthUserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,4 +15,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
     User findUserByUsername(String username);
+
+    @Query("select new com.itransition.profunding.model.dto.AuthUserDto(u.id, u.username, u.userRole) " +
+           "from User u where u.id = :idParam")
+    AuthUserDto getAuthUserById(@Param("idParam")Long id);
+
+    @Query("select new com.itransition.profunding.model.dto.AuthUserDto(u.id, u.username, u.userRole) " +
+           "from User u where u.username = :usernameParam")
+    AuthUserDto getAuthUserByUsername(@Param("usernameParam")String username);
 }
