@@ -36,7 +36,6 @@ import java.security.SecureRandom;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String[] allowedPathsForPost = {"/login"};
-    private static final String[] allowedPathsForOptions = {"/login"};
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     private final UserDetailsService userDetailsService;
@@ -80,7 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers(HttpMethod.POST, allowedPathsForPost)
-                .antMatchers(HttpMethod.OPTIONS, allowedPathsForOptions);
+                .antMatchers(HttpMethod.OPTIONS);
     }
 
     @Override
