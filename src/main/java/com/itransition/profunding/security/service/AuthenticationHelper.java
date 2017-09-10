@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.jwt.Jwt;
@@ -32,7 +31,7 @@ public class AuthenticationHelper {
 
     private final static Logger logger = LoggerFactory.getLogger(AuthenticationHelper.class);
 
-    public static final String AUTHENTICATION_TOKEN_HEADER = "Authentication";
+    public static final String AUTHENTICATION_TOKEN_HEADER = "authentication";
 
     private static final String AUTHENTICATION_TOKEN_EXPIRATION_TIME = "security.authentication.token.expiration_time";
     private static final String AUTHENTICATION_TOKEN_GENERATION_SECRET = "security.authentication.token.generation.secret";
