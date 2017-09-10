@@ -58,7 +58,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     private String getToken(HttpServletRequest request) {
         String authenticationHeaderName = AuthenticationHelper.AUTHENTICATION_TOKEN_HEADER;
-        return Optional.ofNullable(request.getHeader(authenticationHeaderName))
-                       .map(header -> header.substring(7)).orElse(null);
+        return Optional.ofNullable(request.getHeader(authenticationHeaderName)).orElse(null);
     }
 }
