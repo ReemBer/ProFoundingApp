@@ -16,7 +16,7 @@ public interface RegistrationDataRepository extends JpaRepository<RegistrationDa
 
     void deleteByExpirationTimeLessThan(Long currentTime);
 
-
-    RegistrationData findByUsername(String username);
     RegistrationData findByEmail(String email);
+    RegistrationData findByUsername(String username);
+    RegistrationData findByRegistrationHash(String registrationHash);
 }
