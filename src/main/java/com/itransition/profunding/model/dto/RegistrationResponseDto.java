@@ -18,4 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegistrationResponseDto {
     private String status;
+
+    public RegistrationResponseDto(RegistrationResponseStatus status) {
+        this.status = status.name();
+    }
 }
