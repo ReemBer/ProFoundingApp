@@ -24,6 +24,7 @@ public class RegistrationController {
 
     @PostMapping
     public @ResponseBody RegistrationResponseDto register(@RequestBody RegistrationRequestDto registrationRequestDto){
+        registrationService.clearExpiredRegistrationData();
         return registrationService.register(registrationRequestDto);
     }
 

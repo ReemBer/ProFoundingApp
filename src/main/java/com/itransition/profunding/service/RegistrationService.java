@@ -13,4 +13,5 @@ public interface RegistrationService {
 
     RegistrationResponseDto register(RegistrationRequestDto registrationData);
     ConfirmRegistrationResponseStatus confirm(String confirmationHash);
+    void clearExpiredRegistrationData();
 }

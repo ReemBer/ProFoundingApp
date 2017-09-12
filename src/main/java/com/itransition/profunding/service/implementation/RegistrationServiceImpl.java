@@ -10,10 +10,7 @@ import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.service.RegistrationService;
 import com.itransition.profunding.service.Transformer;
 import lombok.RequiredArgsConstructor;
-import org.apache.tools.ant.taskdefs.Java;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +35,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final RegistrationDataRepository registrationDataRepository;
     private final Transformer<RegistrationData, RegistrationRequestDto> registrationDataTransformer;
     private final Transformer<User, RegistrationData> registrationUserTransformer;
+
     @Override
     public RegistrationResponseDto register(RegistrationRequestDto registrationRequest) {
         try {
@@ -70,6 +68,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         } else {
             return ConfirmRegistrationResponseStatus.OK;
         }
+    }
+
+    @Override
+    public void clearExpiredRegistrationData() {
+        registrationDataRepository.deleteByExpirationTimeLessThan(System.currentTimeMillis());
     }
 
     private void checkExisting(RegistrationRequestDto registrationRequestDto) {
