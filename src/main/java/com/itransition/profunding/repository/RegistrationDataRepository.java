@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface RegistrationDataRepository extends JpaRepository<RegistrationData, Long> {
 
     void deleteByExpirationTimeLessThan(Long currentTime);
+    void deleteByUsername(String username);
+    void deleteByEmail(String email);
 
     RegistrationData findByEmail(String email);
     RegistrationData findByUsername(String username);

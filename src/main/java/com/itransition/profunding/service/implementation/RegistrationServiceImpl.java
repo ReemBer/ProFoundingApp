@@ -66,6 +66,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         if(registeredUser == null) {
             return ConfirmRegistrationResponseStatus.ERROR;
         } else {
+            registrationDataRepository.deleteByUsername(registrationData.getUsername());
             return ConfirmRegistrationResponseStatus.OK;
         }
     }
