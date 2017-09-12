@@ -35,7 +35,8 @@ import java.security.SecureRandom;
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final String[] allowedPathsForPost = {"/login"};
+    private static final String[] allowedPathsForPost = {"/login", "/registration"};
+    private static final String[] allowedPathsForGet = {"/login", "/registration/*"};
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     private final UserDetailsService userDetailsService;
@@ -79,6 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers(HttpMethod.POST, allowedPathsForPost)
+                .antMatchers(HttpMethod.GET, allowedPathsForGet)
                 .antMatchers(HttpMethod.OPTIONS);
     }
 
