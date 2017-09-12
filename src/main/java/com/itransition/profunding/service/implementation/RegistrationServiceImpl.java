@@ -102,12 +102,25 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
     }
 
-    private void sendConfirmationMessage(String email, String registrationHash) throws MessagingException {
+    private void sendConfirmationMessage(String email, String registrationHash) throws Exception {
         MimeMessage mail = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-        helper.setTo("vlad.tarasevich.97@mail.ru");
-        helper.setSubject("Its a subject.");
-        helper.setText("To confirm registration go to: http://localhost:8080/registration/" + registrationHash);
-        javaMailSender.send(mail);
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+            helper.setTo("vlad.tarasevich.97@mail.ru");
+            helper.setSubject("Confirm registration.");
+            helper.setText("To confirm registration go to: http://localhost:8080/registration/" + registrationHash);
+            sendEmail(mail);
+        } catch (MessagingException e) {
+            registrationDataRepository.deleteByEmail(email);
+            throw new Exception();
+        }
+    }
+
+    private void sendEmail(MimeMessage mail) {
+        try {
+            javaMailSender.send(mail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
