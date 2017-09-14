@@ -1,4 +1,4 @@
-package com.itransition.profunding.exception;
+package com.itransition.profunding.exception.auth;
 
 import org.springframework.security.core.AuthenticationException;
 

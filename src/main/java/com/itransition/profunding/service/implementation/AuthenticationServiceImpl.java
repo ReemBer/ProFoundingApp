@@ -1,7 +1,7 @@
 package com.itransition.profunding.service.implementation;
 
-import com.itransition.profunding.exception.AuthenticationFailedException;
-import com.itransition.profunding.exception.UserNotFoundException;
+import com.itransition.profunding.exception.auth.AuthenticationFailedException;
+import com.itransition.profunding.exception.auth.UserNotFoundException;
 import com.itransition.profunding.model.dto.AuthUserDto;
 import com.itransition.profunding.model.dto.LoginRequestDto;
 import com.itransition.profunding.model.dto.LoginResponseDto;
@@ -10,8 +10,6 @@ import com.itransition.profunding.security.SecurityHelper;
 import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.security.service.AuthenticationHelper;
 import com.itransition.profunding.service.AuthenticationService;
-import com.itransition.profunding.service.dto.JsonException;
-import com.itransition.profunding.service.transformer.AuthUserTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

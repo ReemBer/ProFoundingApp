@@ -1,6 +1,7 @@
 package com.itransition.profunding.controller;
 
 import com.itransition.profunding.exception.*;
+import com.itransition.profunding.exception.registration.*;
 import com.itransition.profunding.model.dto.*;
 import com.itransition.profunding.service.RegistrationService;
 import lombok.RequiredArgsConstructor;

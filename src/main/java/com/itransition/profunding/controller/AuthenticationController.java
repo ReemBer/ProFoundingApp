@@ -1,7 +1,7 @@
 package com.itransition.profunding.controller;
 
-import com.itransition.profunding.exception.AuthenticationFailedException;
-import com.itransition.profunding.exception.UserNotFoundException;
+import com.itransition.profunding.exception.auth.AuthenticationFailedException;
+import com.itransition.profunding.exception.auth.UserNotFoundException;
 import com.itransition.profunding.model.dto.ErrorInfoDto;
 import com.itransition.profunding.model.dto.LoginRequestDto;
 import com.itransition.profunding.model.dto.LoginResponseDto;

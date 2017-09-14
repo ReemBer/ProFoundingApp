@@ -1,4 +1,4 @@
-package com.itransition.profunding.exception;
+package com.itransition.profunding.exception.registration;
 
 /**
  * @author v.tarasevich
