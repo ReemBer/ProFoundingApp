@@ -7,7 +7,8 @@ package com.itransition.profunding.model.dto;
  */
 public enum RegistrationResponseStatus {
     OK,
-    ERROR,
-    SUCH_USERNAME_EXIST,
-    SUCH_MAIL_EXIST,
+    SENDING_EMAIL_ERROR,
+    SUCH_USER_ALREADY_EXIST,
+    REGISTRATION_DATA_NOT_FOUND,
+    USER_CREATING_ERROR
 }

@@ -1,6 +1,5 @@
 package com.itransition.profunding.service;
 
-import com.itransition.profunding.model.dto.ConfirmRegistrationResponseStatus;
 import com.itransition.profunding.model.dto.RegistrationRequestDto;
 import com.itransition.profunding.model.dto.RegistrationResponseDto;
 
@@ -12,6 +11,6 @@ import com.itransition.profunding.model.dto.RegistrationResponseDto;
 public interface RegistrationService {
 
     RegistrationResponseDto register(RegistrationRequestDto registrationData);
-    ConfirmRegistrationResponseStatus confirm(String confirmationHash);
+    void confirm(String confirmationHash);
     void clearExpiredRegistrationData();
 }

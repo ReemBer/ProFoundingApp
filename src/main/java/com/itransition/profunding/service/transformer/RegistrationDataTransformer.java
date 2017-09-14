@@ -56,8 +56,6 @@ public class RegistrationDataTransformer implements Transformer<RegistrationData
     private String createHash(String username) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(11, new SecureRandom());
         String hash = bCryptPasswordEncoder.encode(username);
-        return hash.replace('/', 'a')
-                .replace('.', 'b')
-                .replace('$', 'c');
+        return hash.replaceAll("\\W+", "a");
     }
 }

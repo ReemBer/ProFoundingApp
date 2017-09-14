@@ -1,7 +1,7 @@
 package com.itransition.profunding.service.implementation;
 
-import com.itransition.profunding.exception.EmailAlreadyExistException;
-import com.itransition.profunding.exception.UsernameAlreadyExistException;
+import com.itransition.profunding.exception.*;
+import com.itransition.profunding.exception.registration.*;
 import com.itransition.profunding.model.db.RegistrationData;
 import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.*;
@@ -38,36 +38,29 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public RegistrationResponseDto register(RegistrationRequestDto registrationRequest) {
-        try {
-            checkExisting(registrationRequest);
-            RegistrationData registrationData = registrationDataTransformer.makeEntity(registrationRequest);
-            Object check = registrationDataRepository.save(registrationData);
-            if(check != null) {
-                sendConfirmationMessage(registrationData.getEmail(), registrationData.getRegistrationHash());
-                return new RegistrationResponseDto(RegistrationResponseStatus.OK.name());
-            } else throw new Exception();
-        } catch (UsernameAlreadyExistException e) {
-            return new RegistrationResponseDto(RegistrationResponseStatus.SUCH_USERNAME_EXIST.name());
-        } catch (EmailAlreadyExistException e) {
-            return new RegistrationResponseDto(RegistrationResponseStatus.SUCH_MAIL_EXIST.name());
-        } catch (Exception e) {
-            return new RegistrationResponseDto(RegistrationResponseStatus.ERROR.name());
+        checkExisting(registrationRequest);
+        RegistrationData registrationData = registrationDataTransformer.makeEntity(registrationRequest);
+        Object check = registrationDataRepository.save(registrationData);
+        if(check != null) {
+            sendConfirmationMessage(registrationData.getEmail(), registrationData.getRegistrationHash());
+            return new RegistrationResponseDto(RegistrationResponseStatus.OK.name());
+        } else {
+            throw new RegistrationDataSavingException("Saving of registration data was unsuccessful.");
         }
     }
 
     @Override
-    public ConfirmRegistrationResponseStatus confirm(String confirmationHash) {
+    public void confirm(String confirmationHash) {
         RegistrationData registrationData = registrationDataRepository.findByRegistrationHash(confirmationHash);
         if (registrationData == null) {
-            return ConfirmRegistrationResponseStatus.REGISTRATION_DATA_NOT_FOUND;
+            throw new RegistrationDataNotFoundException("Registration data not found.");
         }
         User registeredUser = registrationUserTransformer.makeEntity(registrationData);
         registeredUser = userRepository.save(registeredUser);
         if(registeredUser == null) {
-            return ConfirmRegistrationResponseStatus.ERROR;
+            throw new NewUserCreatingException("Error in saving data about new user.");
         } else {
             registrationDataRepository.deleteByUsername(registrationData.getUsername());
-            return ConfirmRegistrationResponseStatus.OK;
         }
     }
 
@@ -103,25 +96,29 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
     }
 
-    private void sendConfirmationMessage(String email, String registrationHash) throws Exception {
+    private void sendConfirmationMessage(String email, String registrationHash) {
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-            helper.setTo("vlad.tarasevich.97@mail.ru");
+            helper.setTo(email);
             helper.setSubject("Confirm registration.");
             helper.setText("To confirm registration go to: http://localhost:8080/registration/" + registrationHash);
-            sendEmail(mail);
+            sendEmail(mail, email);
         } catch (MessagingException e) {
             registrationDataRepository.deleteByEmail(email);
-            throw new Exception();
+            throw new EmailSendingException("Error in sending confirmation message.\n" +
+                                            "Registration data deleted.\nRecipient : " + email);
         }
     }
 
-    private void sendEmail(MimeMessage mail) {
+    private void sendEmail(MimeMessage mail, String emailAddress) {
         try {
             javaMailSender.send(mail);
         } catch (Exception e) {
             e.printStackTrace();
+            registrationDataRepository.deleteByEmail(emailAddress);
+            throw new EmailSendingException("Cannot send mail.\n" +
+                                            "Registration data deleted.\nRecipient : " + emailAddress);
         }
     }
 }

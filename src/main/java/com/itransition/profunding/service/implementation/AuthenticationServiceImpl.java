@@ -1,5 +1,7 @@
 package com.itransition.profunding.service.implementation;
 
+import com.itransition.profunding.exception.auth.AuthenticationFailedException;
+import com.itransition.profunding.exception.auth.UserNotFoundException;
 import com.itransition.profunding.model.dto.AuthUserDto;
 import com.itransition.profunding.model.dto.LoginRequestDto;
 import com.itransition.profunding.model.dto.LoginResponseDto;
@@ -8,8 +10,6 @@ import com.itransition.profunding.security.SecurityHelper;
 import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.security.service.AuthenticationHelper;
 import com.itransition.profunding.service.AuthenticationService;
-import com.itransition.profunding.service.dto.JsonException;
-import com.itransition.profunding.service.transformer.AuthUserTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,16 +37,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public LoginResponseDto login(final LoginRequestDto loginRequestDto) {
-        try {
-            UsernamePasswordAuthenticationToken authRequest = makeAuthToken(loginRequestDto);
-            final Authentication authResult = this.authenticationManager.authenticate(authRequest);
-            if (authResult.isAuthenticated()) {
-                return makeResponse(authResult);
-            } else {
-                throw new JsonException("Authentication failed.");
-            }
-        } catch (BadCredentialsException exception) {
-            throw new JsonException("Username or password was incorrect.", exception);
+        UsernamePasswordAuthenticationToken authRequest = makeAuthToken(loginRequestDto);
+        final Authentication authResult = this.authenticationManager.authenticate(authRequest);
+        if (authResult.isAuthenticated()) {
+            return makeResponse(authResult);
+        } else {
+            throw new AuthenticationFailedException("Authentication failed.");
         }
     }
 
@@ -68,7 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         JwtUserDetails userDetails = (JwtUserDetails) authResult.getPrincipal();
         AuthUserDto user = userRepository.getAuthUserById(userDetails.getId());
         if(Objects.isNull(user)) {
-            throw new JsonException("Such user is not in system.");
+            throw new UserNotFoundException("Such user is not in system.");
         }
         return user;
     }
@@ -77,7 +73,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional(readOnly = true)
     public AuthUserDto getMe() {
         Authentication authentication = SecurityHelper.getAuthenticationWithCheck();
-        AuthUserDto authUser = userRepository.getAuthUserByUsername(authentication.getName());
-        return authUser;
+        return userRepository.getAuthUserByUsername(authentication.getName());
     }
 }
