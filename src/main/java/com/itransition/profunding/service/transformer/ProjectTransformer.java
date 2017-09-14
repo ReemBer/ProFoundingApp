@@ -32,6 +32,7 @@ public class ProjectTransformer implements Transformer<Project, ProjectDto> {
         projectDto.setName(project.getName());
         projectDto.setDescription(project.getDescription());
         projectDto.setImageLink(project.getImageLink());
+        projectDto.setCompletionDate(project.getCompletionDate());
         projectDto.setCreatorName(project.getCreatorUser().getUsername());
         projectDto.setFinancialGoals(this.EntityToDtoSet(financialGoalTransformer, project.getFinancialGoals()));
         projectDto.setCurrentAmount(project.getCurrentAmount());
@@ -52,6 +53,7 @@ public class ProjectTransformer implements Transformer<Project, ProjectDto> {
         project.setName(projectDto.getName());
         project.setDescription(projectDto.getDescription());
         project.setImageLink(projectDto.getImageLink());
+        project.setCompletionDate(projectDto.getCompletionDate());
         project.setCreatorUser(userRepository.findUserByUsername(projectDto.getCreatorName()));
         project.setFinancialGoals(this.DtoToEntitySet(financialGoalTransformer, projectDto.getFinancialGoals()));
         project.setCurrentAmount(projectDto.getCurrentAmount());

@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -37,6 +38,9 @@ public class Project {
 
     @Column(name = "image_link")
     private String imageLink;
+
+    @Column(name = "completion_date")
+    private Date completionDate;
 
     @ManyToOne
     @JoinColumn(name = "creator_user")
