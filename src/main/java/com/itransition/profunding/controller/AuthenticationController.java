@@ -26,7 +26,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/login")
-    public LoginResponseDto login(@RequestBody final LoginRequestDto loginRequestDto) {
+    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
         return authenticationService.login(loginRequestDto);
     }
 
