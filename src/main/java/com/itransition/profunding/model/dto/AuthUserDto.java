@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 public class AuthUserDto {
     private Long id;
     private String username;
+    private String email;
     private String role;
 
     public AuthUserDto(Long id, String username, UserRole role) {
