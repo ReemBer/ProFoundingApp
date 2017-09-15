@@ -1,5 +1,6 @@
 package com.itransition.profunding.service;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,8 @@ public interface Transformer<Entity, Dto> {
 
     Entity makeEntity(Dto dto);
 
-    default <Entity1, Dto1> Set<Dto1> EntityToDtoSet(Transformer<Entity1, Dto1> transformer, Set<Entity1> entities) {
+    default <Entity1, Dto1> Set<Dto1> EntityToDtoSet(Transformer<Entity1, Dto1> transformer,
+                                                     Collection<Entity1> entities) {
         Set<Dto1> dtos = new HashSet<>();
         if (entities != null) {
             for (Entity1 entity : entities) {
@@ -24,7 +26,7 @@ public interface Transformer<Entity, Dto> {
         return dtos;
     }
 
-    default <Entity1, Dto1> Set<Entity1> DtoToEntitySet(Transformer<Entity1, Dto1> transformer, Set<Dto1> dtos) {
+    default <Entity1, Dto1> Set<Entity1> DtoToEntitySet(Transformer<Entity1, Dto1> transformer, Collection<Dto1> dtos) {
         Set<Entity1> entitys = new HashSet<>();
         if(dtos != null) {
             for (Dto1 dto : dtos) {
