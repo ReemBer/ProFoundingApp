@@ -22,18 +22,13 @@ import java.util.Set;
 public class ProjectDto {
 
     private Long id;
-    private String name;
+    private String title;
     private String description;
-    private String imageLink;
+    private String content;
+    private String image;
     private Date completionDate;
-    private String creatorName;
     private Set<FinancialGoalDto> financialGoals;
-    private Long currentAmount;
-    private Set<TagDto> tags;
-    private Set<CommentDto> comments;
+    private Long totalAmount;
     private Long totalRating;
-    private Long paymentLowerBound;
-    private Long paymentUpperBound;
-    private String state;
-    private Set<ProjectNewsDto> news;
+    private Set<String> tags;
 }

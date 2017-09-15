@@ -5,10 +5,8 @@ import com.itransition.profunding.model.dto.*;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.service.Transformer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author v.tarasevich
@@ -19,30 +17,24 @@ import java.util.Set;
 @Service
 public class ProjectTransformer implements Transformer<Project, ProjectDto> {
 
-    private final UserRepository userRepository;
-    private final Transformer<FinancialGoal, FinancialGoalDto> financialGoalTransformer;
-    private final Transformer<Tag, TagDto> tagTransformer;
-    private final Transformer<Comment, CommentDto> commentTransformer;
-    private final Transformer<ProjectNews, ProjectNewsDto> projectNewsTransformer;
+    private final Transformer<Tag, String> tagTransformer;
+
+     @Autowired
+     private final Transformer<FinancialGoal, FinancialGoalDto> financialGoalTransformer;
 
     @Override
     public ProjectDto makeDto(Project project) {
         ProjectDto projectDto = new ProjectDto();
         projectDto.setId(project.getId());
-        projectDto.setName(project.getName());
+        projectDto.setTitle(project.getTitle());
         projectDto.setDescription(project.getDescription());
-        projectDto.setImageLink(project.getImageLink());
+        projectDto.setContent(project.getContent().toString());
+        projectDto.setImage(project.getImage());
         projectDto.setCompletionDate(project.getCompletionDate());
-        projectDto.setCreatorName(project.getCreatorUser().getUsername());
         projectDto.setFinancialGoals(this.EntityToDtoSet(financialGoalTransformer, project.getFinancialGoals()));
-        projectDto.setCurrentAmount(project.getCurrentAmount());
+        projectDto.setTotalAmount(project.getTotalAmount());
         projectDto.setTags(this.EntityToDtoSet(tagTransformer, project.getTags()));
-        projectDto.setComments(this.EntityToDtoSet(commentTransformer, project.getComments()));
         projectDto.setTotalRating(project.getTotalRating());
-        projectDto.setPaymentLowerBound(project.getPaymentLowerBound());
-        projectDto.setPaymentUpperBound(project.getPaymentUpperBound());
-        projectDto.setState(project.getProjectCurrentState().name());
-        projectDto.setNews(this.EntityToDtoSet(projectNewsTransformer, project.getProjectNews()));
         return projectDto;
     }
 
@@ -50,20 +42,15 @@ public class ProjectTransformer implements Transformer<Project, ProjectDto> {
     public Project makeEntity(ProjectDto projectDto) {
         Project project = new Project();
         project.setId(projectDto.getId());
-        project.setName(projectDto.getName());
+        project.setTitle(projectDto.getTitle());
         project.setDescription(projectDto.getDescription());
-        project.setImageLink(projectDto.getImageLink());
+        project.setContent(project.getContent());
+        project.setImage(projectDto.getImage());
         project.setCompletionDate(projectDto.getCompletionDate());
-        project.setCreatorUser(userRepository.findUserByUsername(projectDto.getCreatorName()));
         project.setFinancialGoals(this.DtoToEntitySet(financialGoalTransformer, projectDto.getFinancialGoals()));
-        project.setCurrentAmount(projectDto.getCurrentAmount());
+        project.setTotalAmount(projectDto.getTotalAmount());
         project.setTags(this.DtoToEntitySet(tagTransformer, projectDto.getTags()));
-        project.setComments(this.DtoToEntitySet(commentTransformer, projectDto.getComments()));
         project.setTotalRating(project.getTotalRating());
-        project.setPaymentLowerBound(projectDto.getPaymentLowerBound());
-        project.setPaymentUpperBound(projectDto.getPaymentUpperBound());
-        project.setProjectCurrentState(ProjectCurrentState.valueOf(projectDto.getState()));
-        project.setProjectNews(this.DtoToEntitySet(projectNewsTransformer, projectDto.getNews()));
         return project;
     }
 

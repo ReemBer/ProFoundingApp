@@ -1,22 +1,25 @@
 package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.Tag;
-import com.itransition.profunding.model.dto.TagDto;
 import com.itransition.profunding.service.Transformer;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author v.tarasevich
  * @version 1.0
  * @since 14.09.2017 21:45
  */
-public class TagTransformer implements Transformer<Tag, TagDto> {
+@Service
+@RequiredArgsConstructor
+public class TagTransformer implements Transformer<Tag, String> {
     @Override
-    public TagDto makeDto(Tag tag) {
-        return new TagDto();
+    public String makeDto(Tag tag) {
+        return "";
     }
-
-    @Override
-    public Tag makeEntity(TagDto tagDto) {
-        return new Tag();
+        @Override
+    public Tag makeEntity(String tagDto) {
+        throw new UnsupportedOperationException();
     }
 }

@@ -20,13 +20,10 @@ import java.util.Set;
 public class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "tag_id")
-    private Long id;
+    @Column(name = "tag_name")
+    private String tagName;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Project> projects;
 
-    @Column(name = "tag_name")
-    private String tagName;
 }
