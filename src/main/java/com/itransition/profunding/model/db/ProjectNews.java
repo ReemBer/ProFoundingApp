@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -29,9 +30,11 @@ public class ProjectNews {
     private Project rootProject;
 
     @Column(name = "title")
+    @Field
     private String title;
 
     @Column(name = "text")
+    @Field
     private String text;
 
     @ManyToMany(mappedBy = "projectNews", fetch = FetchType.LAZY)

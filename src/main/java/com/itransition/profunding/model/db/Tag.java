@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -28,5 +29,6 @@ public class Tag {
     private Set<Project> projects;
 
     @Column(name = "tag_name")
+    @Field
     private String tagName;
 }
