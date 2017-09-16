@@ -57,7 +57,6 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "creator_user")
-    @IndexedEmbedded
     private User creatorUser;
 
     @ManyToMany(cascade = {CascadeType.DETACH})
