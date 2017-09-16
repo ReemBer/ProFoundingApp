@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -25,6 +26,7 @@ public class User {
     private Long id;
 
     @Column(name = "username")
+    @Field
     private String username;
 
     @Column(name = "password")
