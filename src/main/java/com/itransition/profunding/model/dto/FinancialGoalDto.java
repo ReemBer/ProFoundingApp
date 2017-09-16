@@ -19,4 +19,5 @@ import org.springframework.stereotype.Component;
 public class FinancialGoalDto {
     private String title;
     private Long cost;
+    private Long rootProjectId;
 }
