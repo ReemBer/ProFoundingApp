@@ -36,8 +36,4 @@ public class FinancialGoal {
 
     @Column(name = "deadline_date")
     private Date deadlineDate;
-
-    @Column(name = "financial_goal_status")
-    @Enumerated(EnumType.STRING)
-    private FinancialGoalStatus financialGoalStatus;
 }
