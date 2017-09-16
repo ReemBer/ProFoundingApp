@@ -8,7 +8,8 @@ import com.itransition.profunding.model.dto.*;
 import com.itransition.profunding.repository.RegistrationDataRepository;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.service.RegistrationService;
-import com.itransition.profunding.service.Transformer;
+import com.itransition.profunding.service.transformer.RegistrationDataTransformer;
+import com.itransition.profunding.service.transformer.RegistrationUserTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -33,8 +34,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserRepository userRepository;
     private final RegistrationDataRepository registrationDataRepository;
-    private final Transformer<RegistrationData, RegistrationRequestDto> registrationDataTransformer;
-    private final Transformer<User, RegistrationData> registrationUserTransformer;
+    private final RegistrationDataTransformer registrationDataTransformer;
+    private final RegistrationUserTransformer registrationUserTransformer;
 
     @Override
     public RegistrationResponseDto register(RegistrationRequestDto registrationRequest) {

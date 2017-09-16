@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class FinancialGoalDto {
-    private Long targetAmount;
-    private String description;
-    private String deadline;
-    private String status;
+    private String title;
+    private Long cost;
 }

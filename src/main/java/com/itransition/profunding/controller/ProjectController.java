@@ -4,12 +4,11 @@ import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.dto.ProjectDto;
 import com.itransition.profunding.repository.fulltextSearch.FulltextRepository;
 import com.itransition.profunding.service.ProjectService;
-import com.itransition.profunding.service.Transformer;
+import com.itransition.profunding.service.transformer.ProjectTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final FulltextRepository fulltextRepository;
-    private final Transformer<Project, ProjectDto> projectTransformer;
+    private final ProjectTransformer projectTransformer;
 
     @GetMapping(value = "/projects/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
@@ -39,7 +38,6 @@ public class ProjectController {
 
     @GetMapping(value = "/projects/{searchQuery}/{offset}")
     public List<ProjectDto> fulltextSearch(@PathVariable String searchQuery, @PathVariable int offset) {
-        return new LinkedList<>(projectTransformer.EntityToDtoSet(projectTransformer,
-                fulltextRepository.fullTextSearch(searchQuery, offset)));
+        return null;
     }
 }

@@ -3,66 +3,46 @@ package com.itransition.profunding.service.transformer;
 import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.*;
 import com.itransition.profunding.repository.UserRepository;
-import com.itransition.profunding.service.Transformer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * @author v.tarasevich
  * @version 1.0
  * @since 14.09.2017 21:26
  */
+@Component
 @RequiredArgsConstructor
-@Service
-public class ProjectTransformer implements Transformer<Project, ProjectDto> {
+public class ProjectTransformer {
 
     private final UserRepository userRepository;
-    private final Transformer<FinancialGoal, FinancialGoalDto> financialGoalTransformer;
-    private final Transformer<Tag, TagDto> tagTransformer;
-    private final Transformer<Comment, CommentDto> commentTransformer;
-    private final Transformer<ProjectNews, ProjectNewsDto> projectNewsTransformer;
+    private final FinancialGoalTransformer financialGoalTransformer;
 
-    @Override
     public ProjectDto makeDto(Project project) {
         ProjectDto projectDto = new ProjectDto();
         projectDto.setId(project.getId());
-        projectDto.setName(project.getName());
+        projectDto.setTitle(project.getRefactor());
         projectDto.setDescription(project.getDescription());
-        projectDto.setImageLink(project.getImageLink());
+        projectDto.setImage(project.getImage());
         projectDto.setCompletionDate(project.getCompletionDate());
-        projectDto.setCreatorName(project.getCreatorUser().getUsername());
+        projectDto.setUserId(project.getCreatorUser().getId());
         projectDto.setFinancialGoals(this.EntityToDtoSet(financialGoalTransformer, project.getFinancialGoals()));
-        projectDto.setCurrentAmount(project.getCurrentAmount());
-        projectDto.setTags(this.EntityToDtoSet(tagTransformer, project.getTags()));
-        projectDto.setComments(this.EntityToDtoSet(commentTransformer, project.getComments()));
-        projectDto.setTotalRating(project.getTotalRating());
-        projectDto.setPaymentLowerBound(project.getPaymentLowerBound());
-        projectDto.setPaymentUpperBound(project.getPaymentUpperBound());
-        projectDto.setState(project.getProjectCurrentState().name());
-        projectDto.setNews(this.EntityToDtoSet(projectNewsTransformer, project.getProjectNews()));
+        projectDto.setTotalCost(project.getTotalCost());
+        projectDto.setTags(project.getTags()));
         return projectDto;
     }
 
-    @Override
     public Project makeEntity(ProjectDto projectDto) {
         Project project = new Project();
         project.setId(projectDto.getId());
-        project.setName(projectDto.getName());
+        project.setRefactor(projectDto.getTitle());
         project.setDescription(projectDto.getDescription());
-        project.setImageLink(projectDto.getImageLink());
+        project.setImage(projectDto.getImage());
         project.setCompletionDate(projectDto.getCompletionDate());
-        project.setCreatorUser(userRepository.findUserByUsername(projectDto.getCreatorName()));
+        project.setCreatorUser(userRepository.findOne(projectDto.getUserId()));
         project.setFinancialGoals(this.DtoToEntitySet(financialGoalTransformer, projectDto.getFinancialGoals()));
-        project.setCurrentAmount(projectDto.getCurrentAmount());
-        project.setTags(this.DtoToEntitySet(tagTransformer, projectDto.getTags()));
-        project.setComments(this.DtoToEntitySet(commentTransformer, projectDto.getComments()));
-        project.setTotalRating(project.getTotalRating());
-        project.setPaymentLowerBound(projectDto.getPaymentLowerBound());
-        project.setPaymentUpperBound(projectDto.getPaymentUpperBound());
-        project.setProjectCurrentState(ProjectCurrentState.valueOf(projectDto.getState()));
-        project.setProjectNews(this.DtoToEntitySet(projectNewsTransformer, projectDto.getNews()));
+        project.setTotalCost(projectDto.getTotalCost());
         return project;
     }
-
 
 }

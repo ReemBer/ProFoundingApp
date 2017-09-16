@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,18 +23,17 @@ import java.util.Set;
 public class ProjectDto {
 
     private Long id;
-    private String name;
-    private String description;
-    private String imageLink;
+    private String title;
     private Date completionDate;
-    private String creatorName;
-    private Set<FinancialGoalDto> financialGoals;
-    private Long currentAmount;
-    private Set<TagDto> tags;
-    private Set<CommentDto> comments;
-    private Long totalRating;
-    private Long paymentLowerBound;
-    private Long paymentUpperBound;
-    private String state;
-    private Set<ProjectNewsDto> news;
+    private String description;
+    private String content;
+    private String image;
+    private List<FinancialGoalDto> financialGoals;
+    private Long totalCost;
+    private Long userId;
+    private Set<String> tags;
+//    private Set<CommentDto> comments;
+//    private Long totalRating;
+//    private String state;
+//    private Set<ProjectNewsDto> news;
 }

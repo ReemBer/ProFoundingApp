@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -25,6 +26,7 @@ public class User {
     private Long id;
 
     @Column(name = "username")
+    @Field
     private String username;
 
     @Column(name = "password")
@@ -48,12 +50,10 @@ public class User {
     @Column(name = "last_login_date")
     private String date;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "project_user_subscribes", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @ManyToMany(mappedBy = "subscribedUsers",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Set<Project> projectSubscribes;
 
-    @OneToMany(mappedBy = "payerUser",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "payerUser",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Set<Payment> payments;
 
     @OneToMany(mappedBy = "creatorUser",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
