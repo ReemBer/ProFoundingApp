@@ -18,7 +18,7 @@ import java.security.SecureRandom;
  * @version 1.0
  * @since 11.09.2017 0:10
  */
-@Service
+@Component
 @RequiredArgsConstructor
 public class RegistrationDataTransformer implements Transformer<RegistrationData, RegistrationRequestDto> {
 

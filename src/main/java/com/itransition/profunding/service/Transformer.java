@@ -1,5 +1,7 @@
 package com.itransition.profunding.service;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +11,7 @@ import java.util.Set;
  * @version 1.0
  * @since 11.09.2017 0:11
  */
-
+@Component
 public interface Transformer<Entity, Dto> {
     Dto makeDto(Entity entity);
 

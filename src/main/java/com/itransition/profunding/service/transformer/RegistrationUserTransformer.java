@@ -6,6 +6,7 @@ import com.itransition.profunding.model.db.UserRole;
 import com.itransition.profunding.service.Transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  * @since 11.09.2017 3:19
  */
-@Service
+@Component
 @RequiredArgsConstructor
 public class RegistrationUserTransformer implements Transformer<User, RegistrationData> {
 
