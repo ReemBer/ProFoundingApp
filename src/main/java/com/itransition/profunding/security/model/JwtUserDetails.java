@@ -32,7 +32,7 @@ public class JwtUserDetails implements UserDetails {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.grantedAuthorities = new HashSet<>();
-        this.grantedAuthorities.add(new SimpleGrantedAuthority(user.getUserRole().name()));
+        this.grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override

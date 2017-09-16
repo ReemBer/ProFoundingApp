@@ -18,5 +18,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginResponseDto {
     private String token;
-    private AuthUserDto authUserDto;
+    private Long id;
+    private String username;
+    private String role;
+
+    public LoginResponseDto(String token, AuthUserDto authUserDto) {
+        this.token = token;
+        this.id = authUserDto.getId();
+        this.username = authUserDto.getUsername();
+        this.role = authUserDto.getRole();
+    }
 }

@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
@@ -31,9 +32,9 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "root_project")
-    @IndexedEmbedded
     private Project rootProject;
 
     @Column(name = "text")
+    @Field
     private String text;
 }
