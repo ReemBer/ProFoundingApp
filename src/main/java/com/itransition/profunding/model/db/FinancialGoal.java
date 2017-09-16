@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -28,12 +29,11 @@ public class FinancialGoal {
     @JoinColumn(name = "project_id")
     private Project rootProject;
 
-    @Column(name = "target_amount")
-    private Long targetAmount;
+    @Column(name = "title")
+    @Field
+    private String title;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "cost")
+    private Long cost;
 
-    @Column(name = "deadline_date")
-    private Date deadlineDate;
 }
