@@ -2,14 +2,11 @@ package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.RegistrationData;
 import com.itransition.profunding.model.dto.RegistrationRequestDto;
-import com.itransition.profunding.service.Transformer;
 import com.itransition.profunding.util.TimeConverter;
 import lombok.RequiredArgsConstructor;
-import org.bouncycastle.crypto.macs.HMac;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 
@@ -20,18 +17,16 @@ import java.security.SecureRandom;
  */
 @Component
 @RequiredArgsConstructor
-public class RegistrationDataTransformer implements Transformer<RegistrationData, RegistrationRequestDto> {
+public class RegistrationDataTransformer {
 
     private static final String PROP_CONFIRMATION_EXPIRATION_TIME = "registration.confirmation.expiration_time";
 
     private final Environment environment;
 
-    @Override
     public RegistrationRequestDto makeDto(RegistrationData registrationData) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public RegistrationData makeEntity(RegistrationRequestDto registrationRequestDto) {
         RegistrationData registrationData = new RegistrationData();
         fillTheFields(registrationData, registrationRequestDto);

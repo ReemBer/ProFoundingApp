@@ -3,7 +3,6 @@ package com.itransition.profunding.service.transformer;
 import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.*;
 import com.itransition.profunding.repository.UserRepository;
-import com.itransition.profunding.service.Transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +13,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class ProjectTransformer implements Transformer<Project, ProjectDto> {
+public class ProjectTransformer {
 
     private final UserRepository userRepository;
-    private final Transformer<FinancialGoal, FinancialGoalDto> financialGoalTransformer;
+    private final FinancialGoalTransformer financialGoalTransformer;
 
-    @Override
     public ProjectDto makeDto(Project project) {
         ProjectDto projectDto = new ProjectDto();
         projectDto.setId(project.getId());
@@ -34,7 +32,6 @@ public class ProjectTransformer implements Transformer<Project, ProjectDto> {
         return projectDto;
     }
 
-    @Override
     public Project makeEntity(ProjectDto projectDto) {
         Project project = new Project();
         project.setId(projectDto.getId());
@@ -47,4 +44,5 @@ public class ProjectTransformer implements Transformer<Project, ProjectDto> {
         project.setTotalCost(projectDto.getTotalCost());
         return project;
     }
+
 }

@@ -4,7 +4,7 @@ import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.dto.ProjectDto;
 import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.service.ProjectService;
-import com.itransition.profunding.service.Transformer;
+import com.itransition.profunding.service.transformer.ProjectTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import javax.transaction.Transactional;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final Transformer<Project, ProjectDto> projectTransformer;
+    private final ProjectTransformer projectTransformer;
 
     @Override
     public ProjectDto getFullProject(Long id) {

@@ -3,11 +3,9 @@ package com.itransition.profunding.service.transformer;
 import com.itransition.profunding.model.db.RegistrationData;
 import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.db.UserRole;
-import com.itransition.profunding.service.Transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * @author v.tarasevich
@@ -16,16 +14,15 @@ import org.springframework.stereotype.Service;
  */
 @Component
 @RequiredArgsConstructor
-public class RegistrationUserTransformer implements Transformer<User, RegistrationData> {
+public class RegistrationUserTransformer {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Override
+
     public RegistrationData makeDto(User user) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public User makeEntity(RegistrationData registrationData) {
         User user = new User();
         user.setUsername(registrationData.getUsername());

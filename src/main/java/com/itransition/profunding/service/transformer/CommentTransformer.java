@@ -2,10 +2,8 @@ package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.Comment;
 import com.itransition.profunding.model.dto.CommentDto;
-import com.itransition.profunding.service.Transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * @author v.tarasevich
@@ -14,13 +12,12 @@ import org.springframework.stereotype.Service;
  */
 @Component
 @RequiredArgsConstructor
-public class CommentTransformer implements Transformer<Comment, CommentDto> {
-    @Override
+public class CommentTransformer{
+
     public CommentDto makeDto(Comment comment) {
         return new CommentDto();
     }
 
-    @Override
     public Comment makeEntity(CommentDto commentDto) {
         return new Comment();
     }
