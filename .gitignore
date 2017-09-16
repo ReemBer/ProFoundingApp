@@ -22,7 +22,5 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
 src/main/resources/database/test.sql
-src/resources/database/indexes/com.itransition.profunding.model.db.Project/write.lock
-src/resources/database/indexes/com.itransition.profunding.model.db.Project/segments_1
-/src/main/resources/database/indexes/
