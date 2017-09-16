@@ -28,7 +28,7 @@ public class RegistrationUserTransformer {
         user.setUsername(registrationData.getUsername());
         user.setPassword(passwordEncoder.encode(registrationData.getPassword()));
         user.setEmail(registrationData.getEmail());
-        user.setUserRole(UserRole.ROLE_NO_PROOFED_USER);
+        user.setRole(UserRole.ROLE_NO_PROOFED_USER);
         return user;
     }
 }

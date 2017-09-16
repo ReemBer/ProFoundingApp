@@ -11,5 +11,5 @@ import com.itransition.profunding.model.dto.ProjectDto;
 public interface ProjectService {
 
     ProjectDto getFullProject(Long id);
-    Project saveProject(ProjectDto projectDto);
+    Boolean saveProject(ProjectDto projectDto);
 }

@@ -28,12 +28,8 @@ public class ProjectDto {
     private String description;
     private String content;
     private String image;
-    private List<FinancialGoalDto> financialGoals;
+    private List<FinancialGoalDto> finansalGoals;
     private Long totalCost;
     private Long userId;
-    private Set<String> tags;
-//    private Set<CommentDto> comments;
-//    private Long totalRating;
-//    private String state;
-//    private Set<ProjectNewsDto> news;
+    private Set<TagDto> tags;
 }

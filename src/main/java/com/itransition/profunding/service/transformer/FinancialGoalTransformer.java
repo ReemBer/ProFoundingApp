@@ -4,6 +4,7 @@ import com.itransition.profunding.model.db.FinancialGoal;
 import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.dto.FinancialGoalDto;
 import com.itransition.profunding.repository.ProjectRepository;
+import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,16 +15,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class FinancialGoalTransformer {
+public class FinancialGoalTransformer extends TransformerService<FinancialGoal, FinancialGoalDto> {
 
     private final ProjectRepository projectRepository;
 
-    public FinancialGoalDto makeDto(FinancialGoal financialGoal) {
-        return new FinancialGoalDto(financialGoal.getTitle(), financialGoal.getCost(), financialGoal.getRootProject().getId());
+    @Override
+    public FinancialGoal parseDto(FinancialGoalDto dto) {
+        FinancialGoal financialGoal = modelMapper.map(dto, FinancialGoal.class);
+        financialGoal.setRootProject(projectRepository.findOne(dto.getRootProjectId()));
+        return financialGoal;
     }
 
-    public FinancialGoal makeEntity(FinancialGoalDto financialGoalDto) {
-        Project project = projectRepository.findOne(financialGoalDto.getRootProjectId());
-        return new FinancialGoal(null, project, financialGoalDto.getTitle(), financialGoalDto.getCost());
+    @Override
+    public FinancialGoalDto buildDto(FinancialGoal entity) {
+        return modelMapper.map(entity, FinancialGoalDto.class);
     }
 }

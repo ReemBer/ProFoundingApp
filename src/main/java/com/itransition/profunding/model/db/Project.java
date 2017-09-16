@@ -32,10 +32,10 @@ public class Project {
 
     @Column(name = "title")
     @Field
-    private String refactor;
+    private String title;
 
     @Column(name = "completion_date")
-    private Date completionDate;
+    private String completionDate;
 
     @Column(name = "description")
     @Field
@@ -50,7 +50,7 @@ public class Project {
     @OneToMany(mappedBy = "rootProject",
             cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @IndexedEmbedded
-    private List<FinancialGoal> financialGoals;
+    private List<FinancialGoal> finansalGoals;
 
     @Column(name = "total_cost")
     private Long totalCost;

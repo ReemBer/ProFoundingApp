@@ -1,5 +1,6 @@
 package com.itransition.profunding.service.implementation;
 
+import com.itransition.profunding.exception.repository.ProjectSavingException;
 import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.dto.ProjectDto;
 import com.itransition.profunding.repository.ProjectRepository;
@@ -25,11 +26,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto getFullProject(Long id) {
-        return projectTransformer.makeDto(projectRepository.findOne(id));
+        return projectTransformer.buildDto(projectRepository.findOne(id));
     }
 
     @Override
-    public Project saveProject(ProjectDto projectDto) {
-        return projectRepository.save(projectTransformer.makeEntity(projectDto));
+    public Boolean saveProject(ProjectDto projectDto) {
+        boolean success = projectRepository.save(projectTransformer.parseDto(projectDto)) != null;
+        if (!success) {
+            throw new ProjectSavingException("Error through saving Project to database.");
+        }
+        return true;
     }
 }

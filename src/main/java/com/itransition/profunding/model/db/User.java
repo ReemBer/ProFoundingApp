@@ -35,9 +35,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "user_role")
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private UserRole role;
 
     @Column(name = "proofing_status")
     @Enumerated(EnumType.STRING)

@@ -2,9 +2,16 @@ package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.*;
+import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.UserRepository;
+import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author v.tarasevich
@@ -13,35 +20,29 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class ProjectTransformer {
+public class ProjectTransformer extends TransformerService<Project, ProjectDto> {
 
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private final UserRepository userRepository;
-    private final FinancialGoalTransformer financialGoalTransformer;
+    private final ProjectRepository projectRepository;
 
-    public ProjectDto makeDto(Project project) {
-        ProjectDto projectDto = new ProjectDto();
-        projectDto.setId(project.getId());
-        projectDto.setTitle(project.getRefactor());
-        projectDto.setDescription(project.getDescription());
-        projectDto.setImage(project.getImage());
-        projectDto.setCompletionDate(project.getCompletionDate());
-        projectDto.setUserId(project.getCreatorUser().getId());
-        projectDto.setFinancialGoals(this.EntityToDtoSet(financialGoalTransformer, project.getFinancialGoals()));
-        projectDto.setTotalCost(project.getTotalCost());
-        projectDto.setTags(project.getTags()));
+    @Override
+    public ProjectDto buildDto(Project project) {
+        ProjectDto projectDto = modelMapper.map(project, ProjectDto.class);
+        try {
+            projectDto.setCompletionDate(dateFormat.parse(project.getCompletionDate()));
+        } catch (ParseException p) {
+            projectDto.setCompletionDate(null);
+        }
         return projectDto;
     }
 
-    public Project makeEntity(ProjectDto projectDto) {
-        Project project = new Project();
-        project.setId(projectDto.getId());
-        project.setRefactor(projectDto.getTitle());
-        project.setDescription(projectDto.getDescription());
-        project.setImage(projectDto.getImage());
-        project.setCompletionDate(projectDto.getCompletionDate());
+    @Override
+    public Project parseDto(ProjectDto projectDto) {
+        Project project = modelMapper.map(projectDto, Project.class);
         project.setCreatorUser(userRepository.findOne(projectDto.getUserId()));
-        project.setFinancialGoals(this.DtoToEntitySet(financialGoalTransformer, projectDto.getFinancialGoals()));
-        project.setTotalCost(projectDto.getTotalCost());
+        project.setSubscribedUsers(projectRepository.findSubscribedUsers(projectDto.getId()));
+        project.setCompletionDate(dateFormat.format(projectDto.getCompletionDate()));
         return project;
     }
 

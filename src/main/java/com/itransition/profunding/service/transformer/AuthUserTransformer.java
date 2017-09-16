@@ -2,23 +2,26 @@ package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.AuthUserDto;
+import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author v.tarasevich
  * @version 1.0
  * @since 08.09.2017 16:29
  */
-@Component
+@Service
 @RequiredArgsConstructor
-public class AuthUserTransformer {
+public class AuthUserTransformer extends TransformerService<User, AuthUserDto> {
 
-    public AuthUserDto makeDto(final User user) {
-        AuthUserDto authUserDto = new AuthUserDto();
-        authUserDto.setId(user.getId());
-        authUserDto.setUsername(user.getUsername());
-        authUserDto.setRole(user.getUserRole().name());
-        return authUserDto;
+    @Override
+    public User parseDto(AuthUserDto dto) {
+        return null;
+    }
+
+    @Override
+    public AuthUserDto buildDto(User entity) {
+        return modelMapper.map(entity, AuthUserDto.class);
     }
 }

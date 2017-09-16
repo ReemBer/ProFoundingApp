@@ -19,11 +19,11 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     User findUserByEmail(String email);
 
-    @Query("select new com.itransition.profunding.model.dto.AuthUserDto(u.id, u.username, u.userRole) " +
+    @Query("select new com.itransition.profunding.model.dto.AuthUserDto(u.id, u.username, u.role) " +
            "from User u where u.id = :idParam")
     AuthUserDto getAuthUserById(@Param("idParam")Long id);
 
-    @Query("select new com.itransition.profunding.model.dto.AuthUserDto(u.id, u.username, u.userRole) " +
+    @Query("select new com.itransition.profunding.model.dto.AuthUserDto(u.id, u.username, u.role) " +
            "from User u where u.username = :usernameParam")
     AuthUserDto getAuthUserByUsername(@Param("usernameParam")String username);
 }
