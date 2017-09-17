@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserTransformer extends TransformerService<User, UserDto> {
 
-    private final ModelMapper modelMapper;
-
     @Override
     public User parseDto(UserDto dto) {
         return modelMapper.map(dto, User.class);

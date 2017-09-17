@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 

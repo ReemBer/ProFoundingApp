@@ -29,7 +29,6 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final FulltextRepository fulltextRepository;
-    private final ProjectTransformer projectTransformer;
 
     @GetMapping(value = "/projects/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
