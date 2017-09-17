@@ -39,36 +39,16 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "proofing_status")
-    @Enumerated(EnumType.STRING)
-    private ProofingStatus proofingStatus;
-
-    @Column(name = "user_status")
-    @Enumerated(EnumType.STRING)
-    private UserStatus userStatus;
+    @Column(name = "image")
+    private String image;
 
     @Column(name = "last_login_date")
     private String date;
 
-    @ManyToMany(mappedBy = "subscribedUsers",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    private Set<Project> projectSubscribes;
-
-    @OneToMany(mappedBy = "payerUser",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    private Set<Payment> payments;
-
     @OneToMany(mappedBy = "creatorUser",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Project> myProjects;
+    private Set<Project> projects;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "users_achievements", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-    private Set<Achievement> achievements;
+    @ManyToMany(mappedBy = "subscribedUsers",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    private Set<Project> followedProjects;
 
-    @OneToMany(mappedBy = "userAuthor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Comment> comments;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_project_news", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_news_id"))
-    private Set<ProjectNews> projectNews;
 }
