@@ -5,9 +5,11 @@ import com.itransition.profunding.exception.auth.UserNotFoundException;
 import com.itransition.profunding.model.dto.ErrorInfoDto;
 import com.itransition.profunding.model.dto.LoginRequestDto;
 import com.itransition.profunding.model.dto.LoginResponseDto;
+import com.itransition.profunding.model.dto.UserDto;
 import com.itransition.profunding.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,12 @@ public class AuthenticationController {
     @PostMapping(value = "/login")
     public LoginResponseDto login(@RequestBody final LoginRequestDto loginRequestDto) {
         return authenticationService.login(loginRequestDto);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/me")
+    public UserDto getMe() {
+        return authenticationService.getMe();
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
