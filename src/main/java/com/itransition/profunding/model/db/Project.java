@@ -35,7 +35,7 @@ public class Project {
     private String title;
 
     @Column(name = "completion_date")
-    private String completionDate;
+    private Date completionDate;
 
     @Column(name = "description")
     @Field
@@ -64,21 +64,9 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> subscribedUsers;
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST, CascadeType.DETACH}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "projects_tags", joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     @IndexedEmbedded
     private Set<Tag> tags;
-
-//    @OneToMany(mappedBy = "rootProject",
-//            cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-//    @IndexedEmbedded
-//    private Set<Comment> comments;
-//
-//    @OneToMany(mappedBy = "rootProject", fetch = FetchType.LAZY)
-//    private Set<Payment> payments;
-
-//    @OneToMany(mappedBy = "rootProject",fetch = FetchType.LAZY)
-//    @IndexedEmbedded
-//    private Set<ProjectNews> projectNews;
 }
