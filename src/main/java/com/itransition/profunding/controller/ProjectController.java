@@ -5,6 +5,8 @@ import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.dto.ErrorInfoDto;
 import com.itransition.profunding.model.dto.ProjectDto;
 import com.itransition.profunding.repository.fulltextSearch.FulltextRepository;
+import com.itransition.profunding.security.SecurityHelper;
+import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.service.ProjectService;
 import com.itransition.profunding.service.transformer.ProjectTransformer;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +40,18 @@ public class ProjectController {
     @PostMapping(value = "/projects/create")
     public Boolean createProject(@RequestBody ProjectDto projectDto) {
         return projectService.saveProject(projectDto);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
+    @GetMapping(value = "/projects/my")
+    public List<ProjectDto> getMyProjects() {
+        return projectService.getMyProjects();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/projects/followed")
+    public List<ProjectDto> getFollowedProjects() {
+        return projectService.getMyFollowedProjects();
     }
 
     @GetMapping(value = "/projects/{searchQuery}/{offset}")
