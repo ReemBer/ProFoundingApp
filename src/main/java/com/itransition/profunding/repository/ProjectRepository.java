@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,6 +20,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Override
     Project findOne(Long aLong);
+
+    List<Project> findAllByCreatorUserId(Long id);
 
     @Query("select p.subscribedUsers from Project p where p.id = :projectId")
     Set<User> findSubscribedUsers(@Param("projectId") Long projectId);

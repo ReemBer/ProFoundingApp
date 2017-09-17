@@ -1,5 +1,11 @@
 package com.itransition.profunding.model.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -8,17 +14,19 @@ import java.util.Set;
  * @version 1.0
  * @since 14.09.2017 20:56
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Component
 public class UserDto {
+
+    private Long id;
     private String username;
     private String email;
-    private String userRole;
-    private String proofingStatus;
-    private String userStatus;
-    private Date   lastLoginDate;
-    private Set<ProjectDto> projectSubscribes;
-    private Set<PaymentDto> payments;
-    private Set<ProjectDto> myProjects;
-    private Set<AchievementDto> achievemets;
-    private Set<CommentDto> comments;
-    private Set<ProjectNewsDto> projectNews;
+    private String password;
+    private String role;
+    private String image;
+    private Set<ProjectDto> projects;
+    private Set<ProjectDto> followedProjects;
 }

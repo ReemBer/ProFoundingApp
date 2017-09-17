@@ -6,12 +6,14 @@ import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * @author v.tarasevich
@@ -22,19 +24,12 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class ProjectTransformer extends TransformerService<Project, ProjectDto> {
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
 
     @Override
     public ProjectDto buildDto(Project project) {
-        ProjectDto projectDto = modelMapper.map(project, ProjectDto.class);
-        try {
-            projectDto.setCompletionDate(dateFormat.parse(project.getCompletionDate()));
-        } catch (ParseException p) {
-            projectDto.setCompletionDate(null);
-        }
-        return projectDto;
+        return modelMapper.map(project, ProjectDto.class);
     }
 
     @Override
@@ -42,7 +37,7 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
         Project project = modelMapper.map(projectDto, Project.class);
         project.setCreatorUser(userRepository.findOne(projectDto.getUserId()));
         project.setSubscribedUsers(projectRepository.findSubscribedUsers(projectDto.getId()));
-        project.setCompletionDate(dateFormat.format(projectDto.getCompletionDate()));
+        project.setCompletionDate(projectDto.getCompletionDate());
         return project;
     }
 
