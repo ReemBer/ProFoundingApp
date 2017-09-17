@@ -5,6 +5,7 @@ import com.itransition.profunding.model.dto.TagDto;
 import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,15 +17,45 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TagTransformer extends TransformerService<Tag, TagDto> {
 
-    private final ModelMapper modelMapper;
+    private final ModelMapper parser;
+    private final ModelMapper builder;
+    private boolean parserInitialized = false;
+    private boolean builderInitialized = false;
 
     @Override
     public Tag parseDto(TagDto dto) {
-        return modelMapper.map(dto, Tag.class);
+        if (!parserInitialized) {
+            parser.addMappings(getPropertiesForParsing());
+            parserInitialized = true;
+        }
+        return parser.map(dto, Tag.class);
     }
 
     @Override
     public TagDto buildDto(Tag entity) {
-        return modelMapper.map(entity, TagDto.class);
+        if (!builderInitialized) {
+            builder.addMappings(getPropertiesForBuilding());
+            builderInitialized = true;
+        }
+        return builder.map(entity, TagDto.class);
+    }
+
+    private PropertyMap<TagDto, Tag> getPropertiesForParsing() {
+        return new PropertyMap<TagDto, Tag>() {
+            @Override
+            protected void configure() {
+                map().setProjects(null);
+                map().setTagName(source.getValue());
+            }
+        };
+    }
+
+    private PropertyMap<Tag, TagDto> getPropertiesForBuilding() {
+        return new PropertyMap<Tag, TagDto>() {
+            @Override
+            protected void configure() {
+                map().setValue(source.getTagName());
+            }
+        };
     }
 }

@@ -3,6 +3,7 @@ package com.itransition.profunding.service.transformer;
 import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.*;
 import com.itransition.profunding.repository.ProjectRepository;
+import com.itransition.profunding.repository.TagRepository;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @author v.tarasevich
@@ -26,6 +25,8 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
 
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
+    private final TagRepository tagRepository;
+    private final TagTransformer tagTransformer;
 
     @Override
     public ProjectDto buildDto(Project project) {
@@ -38,7 +39,20 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
         project.setCreatorUser(userRepository.findOne(projectDto.getUserId()));
         project.setSubscribedUsers(projectRepository.findSubscribedUsers(projectDto.getId()));
         project.setCompletionDate(projectDto.getCompletionDate());
+        Set<Tag> tags = new LinkedHashSet<>(tagTransformer.parseDtoList(new ArrayList<>(projectDto.getTags())));
+        switchExistTags(tags);
+        project.setTags(tags);
         return project;
     }
 
+    private void switchExistTags(Set<Tag> tags) {
+        List<Tag> tagsDB = tagRepository.findAll();
+        for (Tag tagDB : tagsDB) {
+            for(Tag tag : tags) {
+                if(tag.getTagName().equals(tagDB.getTagName())) {
+                    tag.setId(tagDB.getId());
+                }
+            }
+        }
+    }
 }

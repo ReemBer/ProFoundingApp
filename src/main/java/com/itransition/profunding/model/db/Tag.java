@@ -28,7 +28,15 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Project> projects;
 
-    @Column(name = "tag_name")
+    @Column(name = "tag_name", unique = true)
     @Field
     private String tagName;
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !o.getClass().equals(this.getClass())) {
+            return false;
+        }
+        return this.tagName.equals(((Tag) o).tagName);
+    }
 }
