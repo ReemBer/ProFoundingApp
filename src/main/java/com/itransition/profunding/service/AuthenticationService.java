@@ -1,8 +1,10 @@
 package com.itransition.profunding.service;
 
+import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.AuthUserDto;
 import com.itransition.profunding.model.dto.LoginRequestDto;
 import com.itransition.profunding.model.dto.LoginResponseDto;
+import com.itransition.profunding.model.dto.UserDto;
 
 /**
  * @author v.tarasevich
@@ -12,5 +14,5 @@ import com.itransition.profunding.model.dto.LoginResponseDto;
 public interface AuthenticationService {
 
     LoginResponseDto login(final LoginRequestDto loginRequestDto);
-    AuthUserDto getMe();
+    UserDto getMe();
 }

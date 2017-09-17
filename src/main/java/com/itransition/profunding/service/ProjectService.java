@@ -3,6 +3,8 @@ package com.itransition.profunding.service;
 import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.dto.ProjectDto;
 
+import java.util.List;
+
 /**
  * @author v.tarasevich
  * @version 1.0
@@ -11,5 +13,7 @@ import com.itransition.profunding.model.dto.ProjectDto;
 public interface ProjectService {
 
     ProjectDto getFullProject(Long id);
-    Project saveProject(ProjectDto projectDto);
+    List<ProjectDto> getMyProjects();
+    List<ProjectDto> getMyFollowedProjects();
+    Boolean saveProject(ProjectDto projectDto);
 }

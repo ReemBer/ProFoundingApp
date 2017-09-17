@@ -2,57 +2,43 @@ package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.*;
+import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.UserRepository;
-import com.itransition.profunding.service.Transformer;
+import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.modelmapper.PropertyMap;
+import org.springframework.stereotype.Component;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * @author v.tarasevich
  * @version 1.0
  * @since 14.09.2017 21:26
  */
+@Component
 @RequiredArgsConstructor
-@Service
-public class ProjectTransformer implements Transformer<Project, ProjectDto> {
+public class ProjectTransformer extends TransformerService<Project, ProjectDto> {
 
-    private final Transformer<Tag, String> tagTransformer;
-
-     @Autowired
-     private final Transformer<FinancialGoal, FinancialGoalDto> financialGoalTransformer;
+    private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
-    public ProjectDto makeDto(Project project) {
-        ProjectDto projectDto = new ProjectDto();
-        projectDto.setId(project.getId());
-        projectDto.setTitle(project.getTitle());
-        projectDto.setDescription(project.getDescription());
-        projectDto.setContent(project.getContent().toString());
-        projectDto.setImage(project.getImage());
-        projectDto.setCompletionDate(project.getCompletionDate());
-        projectDto.setFinancialGoals(this.EntityToDtoSet(financialGoalTransformer, project.getFinancialGoals()));
-        projectDto.setTotalAmount(project.getTotalAmount());
-        projectDto.setTags(this.EntityToDtoSet(tagTransformer, project.getTags()));
-        projectDto.setTotalRating(project.getTotalRating());
-        return projectDto;
+    public ProjectDto buildDto(Project project) {
+        return modelMapper.map(project, ProjectDto.class);
     }
 
     @Override
-    public Project makeEntity(ProjectDto projectDto) {
-        Project project = new Project();
-        project.setId(projectDto.getId());
-        project.setTitle(projectDto.getTitle());
-        project.setDescription(projectDto.getDescription());
-        project.setContent(project.getContent());
-        project.setImage(projectDto.getImage());
+    public Project parseDto(ProjectDto projectDto) {
+        Project project = modelMapper.map(projectDto, Project.class);
+        project.setCreatorUser(userRepository.findOne(projectDto.getUserId()));
+        project.setSubscribedUsers(projectRepository.findSubscribedUsers(projectDto.getId()));
         project.setCompletionDate(projectDto.getCompletionDate());
-        project.setFinancialGoals(this.DtoToEntitySet(financialGoalTransformer, projectDto.getFinancialGoals()));
-        project.setTotalAmount(projectDto.getTotalAmount());
-        project.setTags(this.DtoToEntitySet(tagTransformer, projectDto.getTags()));
-        project.setTotalRating(project.getTotalRating());
         return project;
     }
-
 
 }

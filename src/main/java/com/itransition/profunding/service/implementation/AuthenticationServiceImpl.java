@@ -2,19 +2,23 @@ package com.itransition.profunding.service.implementation;
 
 import com.itransition.profunding.exception.auth.AuthenticationFailedException;
 import com.itransition.profunding.exception.auth.UserNotFoundException;
+import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.AuthUserDto;
 import com.itransition.profunding.model.dto.LoginRequestDto;
 import com.itransition.profunding.model.dto.LoginResponseDto;
+import com.itransition.profunding.model.dto.UserDto;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.SecurityHelper;
 import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.security.service.AuthenticationHelper;
 import com.itransition.profunding.service.AuthenticationService;
+import com.itransition.profunding.service.transformer.UserTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final AuthenticationHelper authenticationHelper;
     private final AuthenticationManager authenticationManager;
+    private final UserTransformer userTransformer;
 
     @Override
     public LoginResponseDto login(final LoginRequestDto loginRequestDto) {
@@ -71,8 +76,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional(readOnly = true)
-    public AuthUserDto getMe() {
+    public UserDto getMe() {
         Authentication authentication = SecurityHelper.getAuthenticationWithCheck();
-        return userRepository.getAuthUserByUsername(authentication.getName());
+        return userTransformer.buildDto(userRepository.findUserByUsername(authentication.getName()));
     }
 }

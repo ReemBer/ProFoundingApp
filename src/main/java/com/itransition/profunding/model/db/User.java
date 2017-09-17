@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -25,6 +26,7 @@ public class User {
     private Long id;
 
     @Column(name = "username")
+    @Field
     private String username;
 
     @Column(name = "password")
@@ -33,42 +35,20 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "user_role")
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private UserRole role;
 
-    @Column(name = "proofing_status")
-    @Enumerated(EnumType.STRING)
-    private ProofingStatus proofingStatus;
-
-    @Column(name = "user_status")
-    @Enumerated(EnumType.STRING)
-    private UserStatus userStatus;
+    @Column(name = "image")
+    private String image;
 
     @Column(name = "last_login_date")
     private String date;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "project_user_subscribes", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id"))
-    private Set<Project> projectSubscribes;
-
-    @OneToMany(mappedBy = "payerUser",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Payment> payments;
-
     @OneToMany(mappedBy = "creatorUser",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Project> myProjects;
+    private Set<Project> projects;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "users_achievements", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-    private Set<Achievement> achievements;
+    @ManyToMany(mappedBy = "subscribedUsers",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    private Set<Project> followedProjects;
 
-    @OneToMany(mappedBy = "userAuthor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Comment> comments;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_project_news", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_news_id"))
-    private Set<ProjectNews> projectNews;
 }

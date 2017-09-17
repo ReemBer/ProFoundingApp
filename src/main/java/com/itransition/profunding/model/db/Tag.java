@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -20,10 +21,14 @@ import java.util.Set;
 public class Tag {
 
     @Id
-    @Column(name = "tag_name")
-    private String tagName;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "tag_id")
+    private Long id;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Project> projects;
 
+    @Column(name = "tag_name")
+    @Field
+    private String tagName;
 }

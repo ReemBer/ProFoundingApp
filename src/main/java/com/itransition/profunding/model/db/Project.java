@@ -1,11 +1,13 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.type.TextType;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,6 +22,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Indexed
 public class Project {
 
     @Id
@@ -27,54 +30,43 @@ public class Project {
     @Column(name = "project_id")
     private Long id;
 
-    @Column(name = "project_title")
+    @Column(name = "title")
+    @Field
     private String title;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "content")
-    private TextType content;
-
-    @Column(name = "image")
-    private String image;
 
     @Column(name = "completion_date")
     private Date completionDate;
 
+    @Column(name = "description")
+    @Field
+    private String description;
+
+    @Column(name = "content")
+    private String content;
+
+    @Column(name = "image")
+    private String image;
+
+    @OneToMany(mappedBy = "rootProject",
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @IndexedEmbedded
+    private List<FinancialGoal> finansalGoals;
+
+    @Column(name = "total_cost")
+    private Long totalCost;
+
     @ManyToOne
     @JoinColumn(name = "creator_user")
-    @IndexedEmbedded
     private User creatorUser;
 
-//    @ManyToMany(mappedBy = "projectSubscribes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<User> subscribedUsers;
+    @ManyToMany(cascade = {CascadeType.DETACH})
+    @JoinTable(name = "project_user_subscribes", joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> subscribedUsers;
 
-    @OneToMany(mappedBy = "rootProject",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<FinancialGoal> financialGoals;
-
-    @Column(name = "total_amount")
-    private Long totalAmount;
-
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "projects_tags", joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @IndexedEmbedded
     private Set<Tag> tags;
-
-//    @OneToMany(mappedBy = "rootProject", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-//    private Set<Comment> comments;
-
-    @Column(name = "total_rating")
-    private Long totalRating;
-
-//    @OneToMany(mappedBy = "rootProject", fetch = FetchType.LAZY)
-//    private Set<Payment> payments;
-
-
-//    @Column(name = "project_current_state")
-//    @Enumerated(value = EnumType.STRING)
-//    private ProjectCurrentState projectCurrentState;
-
-//    @OneToMany(mappedBy = "rootProject",fetch = FetchType.LAZY)
-//    private Set<ProjectNews> projectNews;
 }
