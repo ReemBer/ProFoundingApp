@@ -1,6 +1,6 @@
 package com.itransition.profunding.security;
 
-import com.itransition.profunding.service.dto.JsonException;
+import com.itransition.profunding.exception.auth.AuthenticationFailedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -13,10 +13,10 @@ public class SecurityHelper {
 
     public static Authentication getAuthenticationWithCheck() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean checkAuthenticationExsist = authentication != null && authentication.isAuthenticated();
-        if (checkAuthenticationExsist) {
+        boolean checkAuthenticationExist = authentication != null && authentication.isAuthenticated();
+        if (checkAuthenticationExist) {
             return authentication;
         }
-        throw new JsonException("Authentication failed.");
+        throw new AuthenticationFailedException("Authentication failed.");
     }
 }
