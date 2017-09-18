@@ -21,10 +21,12 @@ public class AuthUserDto {
     private String username;
     private String email;
     private String role;
+    private String image;
 
-    public AuthUserDto(Long id, String username, UserRole role) {
+    public AuthUserDto(Long id, String username, UserRole role, String image) {
         this.id = id;
         this.username = username;
         this.role = role.name();
+        this.image = image;
     }
 }

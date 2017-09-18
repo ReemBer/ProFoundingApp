@@ -22,11 +22,13 @@ public class LoginResponseDto {
     private Long id;
     private String username;
     private String role;
+    private String image;
 
     public LoginResponseDto(String token, AuthUserDto authUserDto) {
         this.token = token;
         this.id = authUserDto.getId();
         this.username = authUserDto.getUsername();
         this.role = authUserDto.getRole();
+        this.image = authUserDto.getImage();
     }
 }
