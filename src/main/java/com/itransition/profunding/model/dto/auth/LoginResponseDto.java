@@ -1,5 +1,6 @@
-package com.itransition.profunding.model.dto;
+package com.itransition.profunding.model.dto.auth;
 
+import com.itransition.profunding.model.dto.auth.AuthUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,8 @@ package com.itransition.profunding.service.implementation;
 import com.itransition.profunding.exception.repository.ProjectSavingException;
 import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.db.User;
-import com.itransition.profunding.model.dto.ProjectDto;
+import com.itransition.profunding.model.dto.project.ProjectCreateDto;
+import com.itransition.profunding.model.dto.project.ProjectDto;
 import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.SecurityHelper;
@@ -51,7 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Boolean saveProject(ProjectDto projectDto) {
+    public Boolean createProject(ProjectCreateDto projectDto) {
         boolean success = projectRepository.save(projectTransformer.parseDto(projectDto)) != null;
         if (!success) {
             throw new ProjectSavingException("Error through saving Project to database.");

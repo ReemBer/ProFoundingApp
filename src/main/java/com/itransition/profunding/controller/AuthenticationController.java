@@ -2,9 +2,10 @@ package com.itransition.profunding.controller;
 
 import com.itransition.profunding.exception.auth.AuthenticationFailedException;
 import com.itransition.profunding.exception.auth.UserNotFoundException;
+import com.itransition.profunding.exception.registration.UnconfirmedUserException;
 import com.itransition.profunding.model.dto.ErrorInfoDto;
-import com.itransition.profunding.model.dto.LoginRequestDto;
-import com.itransition.profunding.model.dto.LoginResponseDto;
+import com.itransition.profunding.model.dto.auth.LoginRequestDto;
+import com.itransition.profunding.model.dto.auth.LoginResponseDto;
 import com.itransition.profunding.model.dto.UserDto;
 import com.itransition.profunding.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,12 @@ public class AuthenticationController {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public ErrorInfoDto userNotFound(HttpServletRequest request, Exception exception) {
+        return new ErrorInfoDto(request.getRequestURL().toString(), exception);
+    }
+
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnconfirmedUserException.class)
+    public ErrorInfoDto userUnconfirmed(HttpServletRequest request, Exception exception) {
         return new ErrorInfoDto(request.getRequestURL().toString(), exception);
     }
 }

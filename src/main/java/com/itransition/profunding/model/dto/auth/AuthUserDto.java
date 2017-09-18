@@ -1,4 +1,4 @@
-package com.itransition.profunding.model.dto;
+package com.itransition.profunding.model.dto.auth;
 
 import com.itransition.profunding.model.db.UserRole;
 import lombok.AllArgsConstructor;

@@ -2,6 +2,8 @@ package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.*;
+import com.itransition.profunding.model.dto.project.ProjectCreateDto;
+import com.itransition.profunding.model.dto.project.ProjectDto;
 import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.TagRepository;
 import com.itransition.profunding.repository.UserRepository;
@@ -43,6 +45,10 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
         switchExistTags(tags);
         project.setTags(tags);
         return project;
+    }
+
+    public Project parseDto(ProjectCreateDto projectCreateDto) {
+        return modelMapper.map(projectCreateDto, Project.class);
     }
 
     private void switchExistTags(Set<Tag> tags) {

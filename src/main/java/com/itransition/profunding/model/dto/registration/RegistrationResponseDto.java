@@ -1,4 +1,4 @@
-package com.itransition.profunding.model.dto;
+package com.itransition.profunding.model.dto.registration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,14 +9,17 @@ import org.springframework.stereotype.Component;
 /**
  * @author v.tarasevich
  * @version 1.0
- * @since 08.09.2017 16:18
+ * @since 10.09.2017 16:20
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class LoginRequestDto {
-    private String username;
-    private String password;
+public class RegistrationResponseDto {
+    private String status;
+
+    public RegistrationResponseDto(RegistrationResponseStatus status) {
+        this.status = status.name();
+    }
 }

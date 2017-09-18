@@ -1,7 +1,7 @@
 package com.itransition.profunding.service;
 
-import com.itransition.profunding.model.dto.RegistrationRequestDto;
-import com.itransition.profunding.model.dto.RegistrationResponseDto;
+import com.itransition.profunding.model.dto.registration.RegistrationRequestDto;
+import com.itransition.profunding.model.dto.registration.RegistrationResponseDto;
 
 /**
  * @author v.tarasevich

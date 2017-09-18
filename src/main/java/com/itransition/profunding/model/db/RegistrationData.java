@@ -32,6 +32,9 @@ public class RegistrationData {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "expiration_time")
     private Long expirationTime;
 
