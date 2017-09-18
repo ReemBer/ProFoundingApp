@@ -1,7 +1,7 @@
 package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.RegistrationData;
-import com.itransition.profunding.model.dto.RegistrationRequestDto;
+import com.itransition.profunding.model.dto.registration.RegistrationRequestDto;
 import com.itransition.profunding.util.TimeConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -40,6 +40,7 @@ public class RegistrationDataTransformer {
         registrationData.setEmail(registrationRequestDto.getEmail());
         registrationData.setPassword(registrationRequestDto.getPassword());
         registrationData.setRegistrationHash(createHash(registrationData.getUsername()));
+        registrationData.setImage(registrationRequestDto.getImage());
     }
 
     private long getExpTimeInMills() {

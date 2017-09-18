@@ -1,4 +1,6 @@
-package com.itransition.profunding.model.dto;
+package com.itransition.profunding.model.dto.registration;
+
+import com.itransition.profunding.model.dto.ErrorInfoDto;
 
 /**
  * @author v.tarasevich

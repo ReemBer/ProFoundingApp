@@ -2,10 +2,9 @@ package com.itransition.profunding.service.implementation;
 
 import com.itransition.profunding.exception.auth.AuthenticationFailedException;
 import com.itransition.profunding.exception.auth.UserNotFoundException;
-import com.itransition.profunding.model.db.User;
-import com.itransition.profunding.model.dto.AuthUserDto;
-import com.itransition.profunding.model.dto.LoginRequestDto;
-import com.itransition.profunding.model.dto.LoginResponseDto;
+import com.itransition.profunding.model.dto.auth.AuthUserDto;
+import com.itransition.profunding.model.dto.auth.LoginRequestDto;
+import com.itransition.profunding.model.dto.auth.LoginResponseDto;
 import com.itransition.profunding.model.dto.UserDto;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.SecurityHelper;
@@ -18,7 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

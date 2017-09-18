@@ -2,7 +2,10 @@ package com.itransition.profunding.controller;
 
 import com.itransition.profunding.exception.*;
 import com.itransition.profunding.exception.registration.*;
-import com.itransition.profunding.model.dto.*;
+import com.itransition.profunding.model.dto.registration.RegistrationErrorInfoDto;
+import com.itransition.profunding.model.dto.registration.RegistrationRequestDto;
+import com.itransition.profunding.model.dto.registration.RegistrationResponseDto;
+import com.itransition.profunding.model.dto.registration.RegistrationResponseStatus;
 import com.itransition.profunding.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,8 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public @ResponseBody RegistrationResponseDto register(@RequestBody RegistrationRequestDto registrationRequestDto){
+    public @ResponseBody
+    RegistrationResponseDto register(@RequestBody RegistrationRequestDto registrationRequestDto){
         registrationService.clearExpiredRegistrationData();
         return registrationService.register(registrationRequestDto);
     }
@@ -34,12 +38,13 @@ public class RegistrationController {
     @GetMapping(value = "/{registrationHash}")
     public String confirm(@PathVariable String registrationHash) {
         registrationService.confirm(registrationHash);
-        return "redirect:http://localhost:8081/login?confirmStatus=OK";
+        return "";
     }
 
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ExceptionHandler({UsernameAlreadyExistException.class, EmailAlreadyExistException.class})
-    public @ResponseBody RegistrationErrorInfoDto suchUserAlreadyExist(HttpServletRequest request, Exception exception) {
+    public @ResponseBody
+    RegistrationErrorInfoDto suchUserAlreadyExist(HttpServletRequest request, Exception exception) {
         return new RegistrationErrorInfoDto(request.getRequestURL().toString(),
                                             exception, RegistrationResponseStatus.SUCH_USER_ALREADY_EXIST);
     }

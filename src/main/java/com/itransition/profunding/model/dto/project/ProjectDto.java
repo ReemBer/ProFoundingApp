@@ -1,5 +1,7 @@
-package com.itransition.profunding.model.dto;
+package com.itransition.profunding.model.dto.project;
 
+import com.itransition.profunding.model.dto.FinancialGoalDto;
+import com.itransition.profunding.model.dto.TagDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

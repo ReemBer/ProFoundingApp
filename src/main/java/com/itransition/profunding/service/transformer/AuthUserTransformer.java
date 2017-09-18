@@ -1,7 +1,7 @@
 package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.User;
-import com.itransition.profunding.model.dto.AuthUserDto;
+import com.itransition.profunding.model.dto.auth.AuthUserDto;
 import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

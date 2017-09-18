@@ -7,10 +7,8 @@ import com.itransition.profunding.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author v.tarasevich
@@ -19,13 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @CrossOrigin
+@RequestMapping(value = "/profile")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping(value = "/profile/{userId}")
+    @GetMapping(value = "/{userId}")
     public UserDto getProfile(@PathVariable Long userId) {
-        return userService.getUser(userId);
+        UserDto dto =  userService.getUser(userId);
+        System.out.println(dto);
+        return dto;
     }
 }

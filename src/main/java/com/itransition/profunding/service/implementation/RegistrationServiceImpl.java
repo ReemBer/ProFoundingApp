@@ -4,7 +4,9 @@ import com.itransition.profunding.exception.*;
 import com.itransition.profunding.exception.registration.*;
 import com.itransition.profunding.model.db.RegistrationData;
 import com.itransition.profunding.model.db.User;
-import com.itransition.profunding.model.dto.*;
+import com.itransition.profunding.model.dto.registration.RegistrationRequestDto;
+import com.itransition.profunding.model.dto.registration.RegistrationResponseDto;
+import com.itransition.profunding.model.dto.registration.RegistrationResponseStatus;
 import com.itransition.profunding.repository.RegistrationDataRepository;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.service.RegistrationService;
@@ -103,7 +105,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
             helper.setTo(email);
             helper.setSubject("Confirm registration.");
-            helper.setText("To confirm registration go to: http://localhost:8080/registration/" + registrationHash);
+            helper.setText("<html><body>To confirm registration go to: <a href='http://localhost:8080/registration/" + registrationHash+"'>Confirm login</a></body></html>", true);
             sendEmail(mail, email);
         } catch (MessagingException e) {
             registrationDataRepository.deleteByEmail(email);

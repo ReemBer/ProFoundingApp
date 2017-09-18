@@ -1,7 +1,7 @@
 package com.itransition.profunding.repository;
 
 import com.itransition.profunding.model.db.User;
-import com.itransition.profunding.model.dto.AuthUserDto;
+import com.itransition.profunding.model.dto.auth.AuthUserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,11 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     User findUserByEmail(String email);
 
-    @Query("select new com.itransition.profunding.model.dto.AuthUserDto(u.id, u.username, u.role) " +
+    @Query("select new com.itransition.profunding.model.dto.auth.AuthUserDto(u.id, u.username, u.role) " +
            "from User u where u.id = :idParam")
     AuthUserDto getAuthUserById(@Param("idParam")Long id);
 
-    @Query("select new com.itransition.profunding.model.dto.AuthUserDto(u.id, u.username, u.role) " +
-           "from User u where u.username = :usernameParam")
-    AuthUserDto getAuthUserByUsername(@Param("usernameParam")String username);
 }

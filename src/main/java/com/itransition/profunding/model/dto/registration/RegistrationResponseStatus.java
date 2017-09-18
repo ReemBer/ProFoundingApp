@@ -1,4 +1,4 @@
-package com.itransition.profunding.model.dto;
+package com.itransition.profunding.model.dto.registration;
 
 /**
  * @author v.tarasevich

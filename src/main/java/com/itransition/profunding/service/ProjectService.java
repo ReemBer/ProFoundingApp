@@ -1,7 +1,7 @@
 package com.itransition.profunding.service;
 
-import com.itransition.profunding.model.db.Project;
-import com.itransition.profunding.model.dto.ProjectDto;
+import com.itransition.profunding.model.dto.project.ProjectCreateDto;
+import com.itransition.profunding.model.dto.project.ProjectDto;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface ProjectService {
     ProjectDto getFullProject(Long id);
     List<ProjectDto> getMyProjects();
     List<ProjectDto> getMyFollowedProjects();
-    Boolean saveProject(ProjectDto projectDto);
+    Boolean createProject(ProjectCreateDto projectDto);
 }
