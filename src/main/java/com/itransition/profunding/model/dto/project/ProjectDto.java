@@ -1,5 +1,6 @@
 package com.itransition.profunding.model.dto.project;
 
+import com.itransition.profunding.model.db.ProjectStatus;
 import com.itransition.profunding.model.dto.FinancialGoalDto;
 import com.itransition.profunding.model.dto.TagDto;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class ProjectDto {
     private String description;
     private String content;
     private String image;
+    private String status;
     private List<FinancialGoalDto> financialGoals;
     private Long totalCost;
     private Long userId;
