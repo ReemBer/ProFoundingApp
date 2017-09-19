@@ -1,7 +1,6 @@
 package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.*;
-import com.itransition.profunding.model.dto.project.ProjectCreateDto;
 import com.itransition.profunding.model.dto.project.ProjectDto;
 import com.itransition.profunding.repository.TagRepository;
 import com.itransition.profunding.repository.UserRepository;
@@ -33,18 +32,11 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
     public Project parseDto(ProjectDto projectDto) {
         Project project = modelMapper.map(projectDto, Project.class);
         mapFinancialGoals(project);
+        setProjectStatus(project, projectDto);
         project.setCreatorUser(userRepository.findOne(projectDto.getUserId()));
         project.setSubscribedUsers(new HashSet<>());
-        Set<Tag> tags = new LinkedHashSet<>(tagTransformer.parseDtoList(new ArrayList<>(projectDto.getTags())));
-        tags = switchExistTags(tags);
-        project.setTags(tags);
+        setProjectTags(project, projectDto);
         return project;
-    }
-
-    public Project parseDto(ProjectCreateDto projectCreateDto) {
-        Project createdProject = modelMapper.map(projectCreateDto, Project.class);
-        createdProject.setTags(switchExistTags(createdProject.getTags()));
-        return createdProject;
     }
 
     private void mapFinancialGoals(Project project) {
@@ -54,6 +46,20 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
             FinancialGoal financialGoal = iterator.next();
             financialGoal.setRootProject(project);
         }
+    }
+
+    private void setProjectStatus(Project project, ProjectDto projectDto) {
+        if(project.getStatus() != null) {
+            project.setStatus(ProjectStatus.valueOf(projectDto.getStatus()));
+        } else {
+            project.setStatus(ProjectStatus.ACTIVE);
+        }
+    }
+        
+    private void setProjectTags(Project project, ProjectDto projectDto) {
+        Set<Tag> tags = new LinkedHashSet<>(tagTransformer.parseDtoList(new ArrayList<>(projectDto.getTags())));
+        tags = switchExistTags(tags);
+        project.setTags(tags);
     }
 
     private Set<Tag> switchExistTags(Set<Tag> tags) {
