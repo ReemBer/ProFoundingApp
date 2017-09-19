@@ -42,10 +42,15 @@ public class Project {
     private String description;
 
     @Column(name = "content")
+    @Field
     private String content;
 
     @Column(name = "image")
     private String image;
+
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    private ProjectStatus status;
 
     @OneToMany(mappedBy = "rootProject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @IndexedEmbedded
