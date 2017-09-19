@@ -15,7 +15,6 @@ import java.util.Set;
 @Table(name = "tags")
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
@@ -28,13 +27,13 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Project> projects;
 
-    @Column(name = "tag_name", unique = true)
+    @Column(name = "tag_name")
     @Field
     private String tagName;
 
     @Override
     public boolean equals(Object o) {
-        if(o == null || !o.getClass().equals(this.getClass())) {
+        if(o == null || !(o instanceof Tag)) {
             return false;
         }
         return this.tagName.equals(((Tag) o).tagName);
