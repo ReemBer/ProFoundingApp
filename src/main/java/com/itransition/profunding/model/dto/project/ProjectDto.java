@@ -30,7 +30,7 @@ public class ProjectDto {
     private String description;
     private String content;
     private String image;
-    private List<FinancialGoalDto> finansalGoals;
+    private List<FinancialGoalDto> financialGoals;
     private Long totalCost;
     private Long userId;
     private Set<TagDto> tags;

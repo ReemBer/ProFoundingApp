@@ -15,5 +15,5 @@ public interface ProjectService {
     ProjectDto getFullProject(Long id);
     List<ProjectDto> getMyProjects();
     List<ProjectDto> getMyFollowedProjects();
-    Boolean createProject(ProjectCreateDto projectDto);
+    Boolean createProject(ProjectDto projectDto);
 }

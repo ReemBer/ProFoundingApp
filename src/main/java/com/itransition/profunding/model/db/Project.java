@@ -47,10 +47,9 @@ public class Project {
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "rootProject",
-            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rootProject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @IndexedEmbedded
-    private List<FinancialGoal> finansalGoals;
+    private Set<FinancialGoal> financialGoals;
 
     @Column(name = "total_cost")
     private Long totalCost;

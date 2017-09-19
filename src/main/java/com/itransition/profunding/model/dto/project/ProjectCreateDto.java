@@ -2,17 +2,17 @@ package com.itransition.profunding.model.dto.project;
 
 import com.itransition.profunding.model.dto.FinancialGoalDto;
 import com.itransition.profunding.model.dto.TagDto;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Component
 public class ProjectCreateDto {
 
@@ -20,7 +20,7 @@ public class ProjectCreateDto {
     private String description;
     private String image;
     private Date completionDate;
-    private List<FinancialGoalDto> finansalGoals;
+    private List<FinancialGoalDto> financialGoals;
     private Long totalCost;
-    private List<TagDto> tags;
+    private Set<TagDto> tags;
 }

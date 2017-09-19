@@ -52,7 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Boolean createProject(ProjectCreateDto projectDto) {
+    public Boolean createProject(ProjectDto projectDto) {
         boolean success = projectRepository.save(projectTransformer.parseDto(projectDto)) != null;
         if (!success) {
             throw new ProjectSavingException("Error through saving Project to database.");

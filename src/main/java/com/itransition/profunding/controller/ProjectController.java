@@ -6,7 +6,6 @@ import com.itransition.profunding.model.dto.project.ProjectCreateDto;
 import com.itransition.profunding.model.dto.project.ProjectDto;
 import com.itransition.profunding.repository.fulltextSearch.FulltextRepository;
 import com.itransition.profunding.service.ProjectService;
-import com.itransition.profunding.service.transformer.ProjectTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public class ProjectController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
     @PostMapping(value = "/projects/create")
-    public Boolean createProject(ProjectCreateDto projectDto) {
+    public Boolean createProject(@RequestBody ProjectDto projectDto) {
         return projectService.createProject(projectDto);
     }
 
