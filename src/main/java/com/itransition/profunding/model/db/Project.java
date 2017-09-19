@@ -42,15 +42,19 @@ public class Project {
     private String description;
 
     @Column(name = "content")
+    @Field
     private String content;
 
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "rootProject",
-            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    private ProjectStatus status;
+
+    @OneToMany(mappedBy = "rootProject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @IndexedEmbedded
-    private List<FinancialGoal> finansalGoals;
+    private Set<FinancialGoal> financialGoals;
 
     @Column(name = "total_cost")
     private Long totalCost;

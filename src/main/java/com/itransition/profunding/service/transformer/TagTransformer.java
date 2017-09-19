@@ -45,7 +45,7 @@ public class TagTransformer extends TransformerService<Tag, TagDto> {
             @Override
             protected void configure() {
                 map().setProjects(null);
-                map().setTagName(source.getTagName());
+                map().setTagName(source.getValue());
             }
         };
     }
@@ -54,7 +54,7 @@ public class TagTransformer extends TransformerService<Tag, TagDto> {
         return new PropertyMap<Tag, TagDto>() {
             @Override
             protected void configure() {
-                map().setTagName(source.getTagName());
+                map().setValue(source.getTagName());
             }
         };
     }

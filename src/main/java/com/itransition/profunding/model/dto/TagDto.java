@@ -15,5 +15,5 @@ import org.springframework.stereotype.Component;
 @EqualsAndHashCode
 @Component
 public class TagDto {
-    private String tagName;
+    private String value;
 }

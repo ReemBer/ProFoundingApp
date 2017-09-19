@@ -48,7 +48,8 @@ public class FulltextRepository {
     private org.apache.lucene.search.Query createQuery(QueryBuilder queryBuilder, String searchQuery) {
         return queryBuilder.keyword().onFields("title",
                                                         "description",
-                                                        "finansalGoals.title",
+                                                        "content",
+                                                        "financialGoals.title",
                                                         "tags.tagName")
                 .matching(searchQuery).createQuery();
     }

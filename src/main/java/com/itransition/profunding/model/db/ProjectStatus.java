@@ -5,7 +5,7 @@ package com.itransition.profunding.model.db;
  * @version 1.0
  * @since 07.09.2017 3:30
  */
-public enum ProjectCurrentState {
+public enum ProjectStatus {
     FAILED,
     ACTIVE,
     PROFITED

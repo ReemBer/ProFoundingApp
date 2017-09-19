@@ -1,19 +1,13 @@
 package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.*;
-import com.itransition.profunding.model.dto.*;
-import com.itransition.profunding.model.dto.project.ProjectCreateDto;
 import com.itransition.profunding.model.dto.project.ProjectDto;
-import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.TagRepository;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -26,7 +20,6 @@ import java.util.*;
 public class ProjectTransformer extends TransformerService<Project, ProjectDto> {
 
     private final UserRepository userRepository;
-    private final ProjectRepository projectRepository;
     private final TagRepository tagRepository;
     private final TagTransformer tagTransformer;
 
@@ -38,27 +31,54 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
     @Override
     public Project parseDto(ProjectDto projectDto) {
         Project project = modelMapper.map(projectDto, Project.class);
+        mapFinancialGoals(project);
+        setProjectStatus(project, projectDto);
         project.setCreatorUser(userRepository.findOne(projectDto.getUserId()));
-        project.setSubscribedUsers(projectRepository.findSubscribedUsers(projectDto.getId()));
-        project.setCompletionDate(projectDto.getCompletionDate());
-        Set<Tag> tags = new LinkedHashSet<>(tagTransformer.parseDtoList(new ArrayList<>(projectDto.getTags())));
-        switchExistTags(tags);
-        project.setTags(tags);
+        project.setSubscribedUsers(new HashSet<>());
+        setProjectTags(project, projectDto);
         return project;
     }
 
-    public Project parseDto(ProjectCreateDto projectCreateDto) {
-        return modelMapper.map(projectCreateDto, Project.class);
+    private void mapFinancialGoals(Project project) {
+        Set<FinancialGoal> financialGoals = project.getFinancialGoals();
+        Iterator<FinancialGoal> iterator = financialGoals.iterator();
+        while (iterator.hasNext()) {
+            FinancialGoal financialGoal = iterator.next();
+            financialGoal.setRootProject(project);
+        }
     }
 
-    private void switchExistTags(Set<Tag> tags) {
+    private void setProjectStatus(Project project, ProjectDto projectDto) {
+        if(project.getStatus() != null) {
+            project.setStatus(ProjectStatus.valueOf(projectDto.getStatus()));
+        } else {
+            project.setStatus(ProjectStatus.ACTIVE);
+        }
+    }
+        
+    private void setProjectTags(Project project, ProjectDto projectDto) {
+        Set<Tag> tags = new LinkedHashSet<>(tagTransformer.parseDtoList(new ArrayList<>(projectDto.getTags())));
+        tags = switchExistTags(tags);
+        project.setTags(tags);
+    }
+
+    private Set<Tag> switchExistTags(Set<Tag> tags) {
         List<Tag> tagsDB = tagRepository.findAll();
-        for (Tag tagDB : tagsDB) {
-            for(Tag tag : tags) {
+        List<Tag> tags1 = new LinkedList<>(tags);
+        Set<Tag> result = new HashSet<>();
+        for(Tag tag : tags) {
+            boolean flag = false;
+            for (Tag tagDB : tagsDB) {
                 if(tag.getTagName().equals(tagDB.getTagName())) {
-                    tag.setId(tagDB.getId());
+                    flag = true;
+                    result.add(tagDB);
+                    break;
                 }
             }
+            if(!flag) {
+                result.add(tag);
+            }
         }
+        return result.size() == 0 ? tags : result;
     }
 }

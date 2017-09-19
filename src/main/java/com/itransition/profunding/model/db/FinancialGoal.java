@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @author v.tarasevich
@@ -15,7 +14,7 @@ import java.util.Date;
 @Table(name = "financial_goals")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"id", "rootProject"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class FinancialGoal {
@@ -25,8 +24,8 @@ public class FinancialGoal {
     @Column(name = "financial_goal_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE})
+    @JoinColumn(name = "root_project")
     private Project rootProject;
 
     @Column(name = "title")
