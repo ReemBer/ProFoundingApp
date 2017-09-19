@@ -2,21 +2,25 @@ package com.itransition.profunding.service.implementation;
 
 import com.itransition.profunding.exception.repository.ProjectSavingException;
 import com.itransition.profunding.model.db.Project;
+import com.itransition.profunding.model.db.ProjectStatus;
 import com.itransition.profunding.model.db.User;
-import com.itransition.profunding.model.dto.project.ProjectCreateDto;
 import com.itransition.profunding.model.dto.project.ProjectDto;
+import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
 import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.SecurityHelper;
 import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.service.ProjectService;
+import com.itransition.profunding.service.transformer.ProjectPreviewTransformer;
 import com.itransition.profunding.service.transformer.ProjectTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author v.tarasevich
@@ -31,6 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectTransformer projectTransformer;
     private final UserRepository userRepository;
+    private final ProjectPreviewTransformer projectPreviewTransformer;
 
     @Override
     public ProjectDto getFullProject(Long id) {
@@ -58,5 +63,15 @@ public class ProjectServiceImpl implements ProjectService {
             throw new ProjectSavingException("Error through saving Project to database.");
         }
         return true;
+    }
+
+    @Override
+    public Map<String, List<ProjectPreviewDto>> getMainPageProjects() {
+        Map<String, List<ProjectPreviewDto> > result = new HashMap<>();
+        List<Project> successfulProjects = projectRepository.findAllByStatusOrderByIdDesc(ProjectStatus.PROFITED);
+        List<Project> newProjects = projectRepository.findAllByOrderByIdDesc();
+        result.put("successProjects", projectPreviewTransformer.buildDtoList(successfulProjects));
+        result.put("newProjects", projectPreviewTransformer.buildDtoList(newProjects));
+        return result;
     }
 }

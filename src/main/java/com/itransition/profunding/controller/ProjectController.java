@@ -2,8 +2,8 @@ package com.itransition.profunding.controller;
 
 import com.itransition.profunding.exception.repository.ProjectSavingException;
 import com.itransition.profunding.model.dto.ErrorInfoDto;
-import com.itransition.profunding.model.dto.project.ProjectCreateDto;
 import com.itransition.profunding.model.dto.project.ProjectDto;
+import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
 import com.itransition.profunding.repository.fulltextSearch.FulltextRepository;
 import com.itransition.profunding.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author v.tarasevich
@@ -29,6 +30,11 @@ public class ProjectController {
     @GetMapping(value = "/projects/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
         return projectService.getFullProject(projectId);
+    }
+
+    @GetMapping(value = "/main_page/{count}")
+    public Map<String, List<ProjectPreviewDto>> mainPageProjects(@PathVariable Integer count) {
+        return projectService.getMainPageProjects();
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")

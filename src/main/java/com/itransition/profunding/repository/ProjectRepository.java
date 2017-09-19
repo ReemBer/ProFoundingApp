@@ -1,7 +1,11 @@
 package com.itransition.profunding.repository;
 
 import com.itransition.profunding.model.db.Project;
+import com.itransition.profunding.model.db.ProjectStatus;
 import com.itransition.profunding.model.db.User;
+import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,6 +27,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findAllByCreatorUserId(Long id);
 
-    @Query("select p.subscribedUsers from Project p where p.id = :projectId")
-    Set<User> findSubscribedUsers(@Param("projectId") Long projectId);
+    List<Project> findAllByStatusOrderByIdDesc(ProjectStatus status);
+
+    List<Project> findAllByOrderByIdDesc();
 }
