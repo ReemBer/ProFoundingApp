@@ -23,4 +23,5 @@ dist/
 nbdist/
 .nb-gradle/
 
+src/main/resources/database/indexes/*
 src/main/resources/database/test.sql
