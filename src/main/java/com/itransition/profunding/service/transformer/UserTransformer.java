@@ -23,6 +23,8 @@ public class UserTransformer extends TransformerService<User, UserDto> {
 
     @Override
     public UserDto buildDto(User entity) {
-        return modelMapper.map(entity, UserDto.class);
+        UserDto userDto = modelMapper.map(entity, UserDto.class);
+        userDto.setPassword("");
+        return userDto;
     }
 }

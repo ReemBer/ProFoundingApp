@@ -38,7 +38,7 @@ public class RegistrationController {
     @GetMapping(value = "/{registrationHash}")
     public String confirm(@PathVariable String registrationHash) {
         registrationService.confirm(registrationHash);
-        return "confirmStatus=OK";
+        return "redirect:http://localhost:8082/confirm";
     }
 
     @ResponseStatus(value = HttpStatus.FORBIDDEN)

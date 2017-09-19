@@ -1,10 +1,15 @@
 package com.itransition.profunding.service.implementation;
 
+import com.itransition.profunding.exception.repository.ProjectSavingException;
 import com.itransition.profunding.model.db.User;
+import com.itransition.profunding.model.dto.ProfileDto;
 import com.itransition.profunding.model.dto.UserDto;
+import com.itransition.profunding.model.dto.UserImageOnlyDto;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.service.UserService;
+import com.itransition.profunding.service.transformer.ProfileTransformer;
 import com.itransition.profunding.service.transformer.UserTransformer;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +26,21 @@ import javax.transaction.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserTransformer userTransformer;
+    private final ProfileTransformer profileTransformer;
 
     @Override
-    public UserDto getUser(Long id) {
-        return userTransformer.buildDto(userRepository.findOne(id));
+    public ProfileDto getProfile(Long id) {
+        return profileTransformer.buildDto(userRepository.findOne(id));
+    }
+
+    @Override
+    public Boolean updateUser(UserImageOnlyDto userImageOnlyDto) {
+        this.userRepository.updateUserById(userImageOnlyDto.getImage(), userImageOnlyDto.getId());
+        User user = userRepository.findById(userImageOnlyDto.getId());
+        if (user == null)
+            return false;
+        else if (user.getImage().equals(userImageOnlyDto.getImage()))
+            return true;
+        return false;
     }
 }

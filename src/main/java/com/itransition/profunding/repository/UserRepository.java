@@ -3,6 +3,7 @@ package com.itransition.profunding.repository;
 import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.auth.AuthUserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long>{
            "from User u where u.id = :idParam")
     AuthUserDto getAuthUserById(@Param("idParam")Long id);
 
+    @Modifying
+    @Query("update User u set u.image =:newImage where u.id =:idParam")
+    void updateUserById(@Param("newImage") String image, @Param("idParam") Long id);
+
+    User findById(Long id);
 }

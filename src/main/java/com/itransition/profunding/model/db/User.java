@@ -51,4 +51,5 @@ public class User {
     @ManyToMany(mappedBy = "subscribedUsers",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Set<Project> followedProjects;
 
+
 }

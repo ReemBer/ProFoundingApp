@@ -1,14 +1,14 @@
 package com.itransition.profunding.controller;
 
-import com.itransition.profunding.model.db.User;
-import com.itransition.profunding.model.dto.UserDto;
-import com.itransition.profunding.service.AuthenticationService;
+import com.itransition.profunding.model.dto.ProfileDto;
+import com.itransition.profunding.model.dto.UserImageOnlyDto;
 import com.itransition.profunding.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author v.tarasevich
@@ -17,16 +17,20 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/profile")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping(value = "/{userId}")
-    public UserDto getProfile(@PathVariable Long userId) {
-        UserDto dto =  userService.getUser(userId);
-        System.out.println(dto);
+    @GetMapping(value = "/profile/{userId}")
+    public ProfileDto getProfile(@PathVariable Long userId) {
+        ProfileDto dto =  userService.getProfile(userId);
         return dto;
     }
+
+    @PostMapping(value = "/users/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean updateUserImage(@RequestBody UserImageOnlyDto userImageOnlyDto) {
+        return userService.updateUser(userImageOnlyDto);
+    }
+
 }
