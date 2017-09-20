@@ -36,6 +36,16 @@ public class ProjectController {
         return projectService.getMainPageProjects();
     }
 
+    @GetMapping(value = "/projects/success")
+    public Map<String, Object> getSuccessProjectsNextPage() {
+        return projectService.getSuccessProjectsNextPage();
+    }
+
+    @GetMapping(value = "/projects/new")
+    public Map<String, Object> getNewProjectsNextPage() {
+        return projectService.getNewProjectsNextPage();
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
     @PostMapping(value = "/projects/create")
     public Boolean createProject(@RequestBody ProjectDto projectDto) {
