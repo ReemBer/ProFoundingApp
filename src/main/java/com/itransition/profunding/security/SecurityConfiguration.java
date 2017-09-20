@@ -36,7 +36,7 @@ import java.security.SecureRandom;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String[] allowedPathsForPost = {"/login", "/registration", "/users/update"};
-    private static final String[] allowedPathsForGet = {"/login",
+    private static final String[] allowedPathsForGet = {"/login", "/tags/*",
             "/registration/*", "/profile/*", "/projects/*"};
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;

@@ -4,7 +4,6 @@ import com.itransition.profunding.model.dto.ProfileDto;
 import com.itransition.profunding.model.dto.UserImageOnlyDto;
 import com.itransition.profunding.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -25,7 +24,7 @@ public class UserController {
         return dto;
     }
 
-    @PostMapping(value = "/users/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/users/update")
     public Boolean updateUserImage(@RequestBody UserImageOnlyDto userImageOnlyDto) {
         return userService.updateUser(userImageOnlyDto);
     }

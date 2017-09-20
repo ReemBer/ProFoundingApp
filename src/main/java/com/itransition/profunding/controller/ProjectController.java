@@ -46,7 +46,7 @@ public class ProjectController {
         return projectService.getNewProjectsNextPage();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER', 'ROLE_NO_PROOFED_USER')")
     @PostMapping(value = "/projects/create")
     public Boolean createProject(@RequestBody ProjectDto projectDto) {
         return projectService.createProject(projectDto);

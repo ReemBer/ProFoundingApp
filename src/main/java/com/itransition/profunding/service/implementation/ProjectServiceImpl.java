@@ -56,6 +56,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDto> getMyProjects() {
+        JwtUserDetails userDetails = (JwtUserDetails) SecurityHelper.getAuthenticationWithCheck().getPrincipal();
         List<Project> projects = projectRepository.findAllByCreatorUserId(userDetails.getId());
         return projectTransformer.buildDtoList(projects);
     }
