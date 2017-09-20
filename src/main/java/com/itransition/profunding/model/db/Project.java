@@ -1,13 +1,13 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,10 +38,12 @@ public class Project {
     private Date completionDate;
 
     @Column(name = "description")
+    @Type(type = "text")
     @Field
     private String description;
 
     @Column(name = "content")
+    @Type(type = "text")
     @Field
     private String content;
 
