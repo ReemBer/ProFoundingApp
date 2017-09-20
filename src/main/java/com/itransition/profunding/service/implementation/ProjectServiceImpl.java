@@ -56,7 +56,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDto> getMyProjects() {
-        JwtUserDetails userDetails = ((JwtUserDetails)SecurityHelper.getAuthenticationWithCheck().getDetails());
         List<Project> projects = projectRepository.findAllByCreatorUserId(userDetails.getId());
         return projectTransformer.buildDtoList(projects);
     }
@@ -79,7 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Map<String, List<ProjectPreviewDto>> getMainPageProjects() {
-        Map<String, List<ProjectPreviewDto> > result = new HashMap<>();
+        Map<String, List<ProjectPreviewDto>> result = new HashMap<>();
         List<Project> successfulProjects = projectRepository.findAllByStatusOrderByIdDesc(
                 ProjectStatus.PROFITED, new PageRequest(0, FIRST_PAGE_SIZE)
         ).getContent();
