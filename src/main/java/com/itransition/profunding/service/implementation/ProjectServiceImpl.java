@@ -43,6 +43,12 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserRepository userRepository;
     private final ProjectPreviewTransformer projectPreviewTransformer;
 
+    private Pageable newProjects = new PageRequest(0, PAGE_SIZE);
+    private Pageable successProjects = new PageRequest(0, PAGE_SIZE);
+
+    private Page<Project> newProjectCurrentPage;
+    private Page<Project> successProjectCurrentPage;
+
     @Override
     public ProjectDto getFullProject(Long id) {
         return projectTransformer.buildDto(projectRepository.findOne(id));
@@ -83,5 +89,31 @@ public class ProjectServiceImpl implements ProjectService {
         result.put("successProjects", projectPreviewTransformer.buildDtoList(successfulProjects));
         result.put("newProjects", projectPreviewTransformer.buildDtoList(newProjects));
         return result;
+    }
+
+    @Override
+    public Map<String, Object> getNewProjectsNextPage() {
+        Map<String, Object> result = new HashMap<>();
+        newProjectCurrentPage = projectRepository.findAllByOrderByIdDesc(newProjects);
+        newProjects = isLastPageCheck(newProjectCurrentPage, result) ?
+                newProjects.first() : newProjects.next();
+        result.put("page", projectPreviewTransformer.buildDtoList(newProjectCurrentPage.getContent()));
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getSuccessProjectsNextPage() {
+        Map<String, Object> result = new HashMap<>();
+        successProjectCurrentPage = projectRepository.findAllByStatusOrderByIdDesc(
+                ProjectStatus.PROFITED, successProjects);
+        successProjects = isLastPageCheck(successProjectCurrentPage, result) ?
+                successProjects.first() : successProjects.next();
+        result.put("page", projectPreviewTransformer.buildDtoList(successProjectCurrentPage.getContent()));
+        return result;
+    }
+
+    private boolean isLastPageCheck(Page<Project> page, Map<String, Object> result) {
+        result.put("last", page.hasNext());
+        return !page.hasNext();
     }
 }

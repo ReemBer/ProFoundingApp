@@ -18,4 +18,6 @@ public interface ProjectService {
     List<ProjectDto> getMyFollowedProjects();
     Boolean createProject(ProjectDto projectDto);
     Map<String, List<ProjectPreviewDto>> getMainPageProjects();
+    Map<String, Object> getNewProjectsNextPage();
+    Map<String, Object> getSuccessProjectsNextPage();
 }
