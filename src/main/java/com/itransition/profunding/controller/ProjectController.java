@@ -25,15 +25,14 @@ import java.util.Map;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final FulltextRepository fulltextRepository;
 
     @GetMapping(value = "/projects/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
         return projectService.getFullProject(projectId);
     }
 
-    @GetMapping(value = "/main_page/{count}")
-    public Map<String, List<ProjectPreviewDto>> mainPageProjects(@PathVariable Integer count) {
+    @GetMapping(value = "/projects/main_page")
+    public Map<String, List<ProjectPreviewDto>> mainPageProjects() {
         return projectService.getMainPageProjects();
     }
 
