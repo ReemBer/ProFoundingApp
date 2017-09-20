@@ -27,7 +27,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findAllByCreatorUserId(Long id);
 
-    List<Project> findAllByStatusOrderByIdDesc(ProjectStatus status);
+    Page<Project> findAllByOrderByIdDesc(Pageable pageable);
 
-    List<Project> findAllByOrderByIdDesc();
+    Page<Project> findAllByStatusOrderByIdDesc(ProjectStatus status, Pageable pageable);
 }
