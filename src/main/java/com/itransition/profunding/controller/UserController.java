@@ -5,10 +5,7 @@ import com.itransition.profunding.model.dto.UserImageOnlyDto;
 import com.itransition.profunding.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * @author v.tarasevich

@@ -14,6 +14,9 @@ import com.itransition.profunding.service.ProjectService;
 import com.itransition.profunding.service.transformer.ProjectPreviewTransformer;
 import com.itransition.profunding.service.transformer.ProjectTransformer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -32,10 +35,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
+    private static final int FIRST_PAGE_SIZE = 4;
+    private static final int PAGE_SIZE = 12;
+
     private final ProjectRepository projectRepository;
     private final ProjectTransformer projectTransformer;
     private final UserRepository userRepository;
     private final ProjectPreviewTransformer projectPreviewTransformer;
+
+    private Pageable newProjects = new PageRequest(0, PAGE_SIZE);
+    private Pageable successProjects = new PageRequest(0, PAGE_SIZE);
+
+    private Page<Project> newProjectCurrentPage;
+    private Page<Project> successProjectCurrentPage;
 
     @Override
     public ProjectDto getFullProject(Long id) {
@@ -68,10 +80,40 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Map<String, List<ProjectPreviewDto>> getMainPageProjects() {
         Map<String, List<ProjectPreviewDto> > result = new HashMap<>();
-        List<Project> successfulProjects = projectRepository.findAllByStatusOrderByIdDesc(ProjectStatus.PROFITED);
-        List<Project> newProjects = projectRepository.findAllByOrderByIdDesc();
+        List<Project> successfulProjects = projectRepository.findAllByStatusOrderByIdDesc(
+                ProjectStatus.PROFITED, new PageRequest(0, FIRST_PAGE_SIZE)
+        ).getContent();
+        List<Project> newProjects = projectRepository.findAllByOrderByIdDesc(
+                new PageRequest(0, FIRST_PAGE_SIZE)
+        ).getContent();
         result.put("successProjects", projectPreviewTransformer.buildDtoList(successfulProjects));
         result.put("newProjects", projectPreviewTransformer.buildDtoList(newProjects));
         return result;
+    }
+
+    @Override
+    public Map<String, Object> getNewProjectsNextPage() {
+        Map<String, Object> result = new HashMap<>();
+        newProjectCurrentPage = projectRepository.findAllByOrderByIdDesc(newProjects);
+        newProjects = isLastPageCheck(newProjectCurrentPage, result) ?
+                newProjects.first() : newProjects.next();
+        result.put("page", projectPreviewTransformer.buildDtoList(newProjectCurrentPage.getContent()));
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getSuccessProjectsNextPage() {
+        Map<String, Object> result = new HashMap<>();
+        successProjectCurrentPage = projectRepository.findAllByStatusOrderByIdDesc(
+                ProjectStatus.PROFITED, successProjects);
+        successProjects = isLastPageCheck(successProjectCurrentPage, result) ?
+                successProjects.first() : successProjects.next();
+        result.put("page", projectPreviewTransformer.buildDtoList(successProjectCurrentPage.getContent()));
+        return result;
+    }
+
+    private boolean isLastPageCheck(Page<Project> page, Map<String, Object> result) {
+        result.put("last", page.hasNext());
+        return !page.hasNext();
     }
 }
