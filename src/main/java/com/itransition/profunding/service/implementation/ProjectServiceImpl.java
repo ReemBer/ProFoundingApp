@@ -14,6 +14,9 @@ import com.itransition.profunding.service.ProjectService;
 import com.itransition.profunding.service.transformer.ProjectPreviewTransformer;
 import com.itransition.profunding.service.transformer.ProjectTransformer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,6 +34,9 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
+
+    private static final int FIRST_PAGE_SIZE = 4;
+    private static final int PAGE_SIZE = 12;
 
     private final ProjectRepository projectRepository;
     private final ProjectTransformer projectTransformer;
@@ -68,8 +74,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Map<String, List<ProjectPreviewDto>> getMainPageProjects() {
         Map<String, List<ProjectPreviewDto> > result = new HashMap<>();
-        List<Project> successfulProjects = projectRepository.findAllByStatusOrderByIdDesc(ProjectStatus.PROFITED);
-        List<Project> newProjects = projectRepository.findAllByOrderByIdDesc();
+        List<Project> successfulProjects = projectRepository.findAllByStatusOrderByIdDesc(
+                ProjectStatus.PROFITED, new PageRequest(0, FIRST_PAGE_SIZE)
+        ).getContent();
+        List<Project> newProjects = projectRepository.findAllByOrderByIdDesc(
+                new PageRequest(0, FIRST_PAGE_SIZE)
+        ).getContent();
         result.put("successProjects", projectPreviewTransformer.buildDtoList(successfulProjects));
         result.put("newProjects", projectPreviewTransformer.buildDtoList(newProjects));
         return result;
