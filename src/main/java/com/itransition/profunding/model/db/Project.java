@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "projects")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"financialGoals", "subscribedUsers", "tags"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Indexed

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "financial_goals")
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"id", "rootProject"})
+@EqualsAndHashCode(exclude = {"rootProject"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class FinancialGoal {

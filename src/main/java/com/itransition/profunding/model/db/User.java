@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"projects", "followedProjects"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

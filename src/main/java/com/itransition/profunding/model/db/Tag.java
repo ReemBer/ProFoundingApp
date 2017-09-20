@@ -15,6 +15,7 @@ import java.util.Set;
 @Table(name = "tags")
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = {"projects"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
@@ -31,11 +32,4 @@ public class Tag {
     @Field
     private String tagName;
 
-    @Override
-    public boolean equals(Object o) {
-        if(o == null || !(o instanceof Tag)) {
-            return false;
-        }
-        return this.tagName.equals(((Tag) o).tagName);
-    }
 }
