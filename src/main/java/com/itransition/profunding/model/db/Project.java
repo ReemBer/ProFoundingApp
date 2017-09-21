@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.db;
 
 import lombok.*;
+import lombok.extern.apachecommons.CommonsLog;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -53,6 +54,9 @@ public class Project {
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     private ProjectStatus status;
+
+    @Column(name = "current_sum")
+    private Long currentSum;
 
     @OneToMany(mappedBy = "rootProject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @IndexedEmbedded

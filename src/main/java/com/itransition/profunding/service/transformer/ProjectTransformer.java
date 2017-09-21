@@ -8,6 +8,7 @@ import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.Period;
 import java.util.*;
 
 /**
@@ -25,7 +26,9 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
 
     @Override
     public ProjectDto buildDto(Project project) {
-        return modelMapper.map(project, ProjectDto.class);
+        ProjectDto projectDto = modelMapper.map(project, ProjectDto.class);
+        projectDto.setLeftDays(setLeftDays(project.getCompletionDate()));
+        return projectDto;
     }
 
     @Override
@@ -49,13 +52,13 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
     }
 
     private void setProjectStatus(Project project, ProjectDto projectDto) {
-        if(project.getStatus() != null) {
+        if (project.getStatus() != null) {
             project.setStatus(ProjectStatus.valueOf(projectDto.getStatus()));
         } else {
             project.setStatus(ProjectStatus.ACTIVE);
         }
     }
-        
+
     private void setProjectTags(Project project, ProjectDto projectDto) {
         Set<Tag> tags = new LinkedHashSet<>(tagTransformer.parseDtoList(new ArrayList<>(projectDto.getTags())));
         tags = switchExistTags(tags);
@@ -66,19 +69,25 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
         List<Tag> tagsDB = tagRepository.findAll();
         List<Tag> tags1 = new LinkedList<>(tags);
         Set<Tag> result = new HashSet<>();
-        for(Tag tag : tags) {
+        for (Tag tag : tags) {
             boolean flag = false;
             for (Tag tagDB : tagsDB) {
-                if(tag.getTagName().equals(tagDB.getTagName())) {
+                if (tag.getTagName().equals(tagDB.getTagName())) {
                     flag = true;
                     result.add(tagDB);
                     break;
                 }
             }
-            if(!flag) {
+            if (!flag) {
                 result.add(tag);
             }
         }
         return result.size() == 0 ? tags : result;
+    }
+
+    private Long setLeftDays(Date completionDate) {
+        Date timeNow = new Date();
+        if (completionDate.before(timeNow)) return 0L;
+        return (completionDate.getTime() - timeNow.getTime()) / 1000 / 60 / 60 / 24;
     }
 }

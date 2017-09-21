@@ -5,6 +5,8 @@ import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
 import com.itransition.profunding.service.TransformerService;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * @author v.tarasevich
  * @version 1.0
@@ -19,6 +21,14 @@ public class ProjectPreviewTransformer extends TransformerService<Project, Proje
 
     @Override
     public ProjectPreviewDto buildDto(Project entity) {
-        return modelMapper.map(entity, ProjectPreviewDto.class);
+        ProjectPreviewDto projectPreviewDto = modelMapper.map(entity, ProjectPreviewDto.class);
+        projectPreviewDto.setLeftDays(setLeftDays(entity.getCompletionDate()));
+        return projectPreviewDto;
+    }
+
+    private Long setLeftDays(Date completionDate) {
+        Date timeNow = new Date();
+        if (completionDate.before(timeNow)) return 0L;
+        return (completionDate.getTime() - timeNow.getTime()) / 1000 / 60 / 60 / 24;
     }
 }

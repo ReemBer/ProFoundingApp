@@ -28,12 +28,14 @@ public class ProjectDto {
     private Long id;
     private String title;
     private Date completionDate;
+    private Long leftDays;
     private String description;
     private String content;
     private String image;
     private String status;
     private List<FinancialGoalDto> financialGoals;
     private Long totalCost;
+    private Long currentSum;
     private Long userId;
     private Set<TagDto> tags;
 }
