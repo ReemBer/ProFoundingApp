@@ -9,6 +9,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Set;
 @Table(name = "projects")
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"financialGoals", "subscribedUsers", "tags"})
+@EqualsAndHashCode(exclude = {"financialGoals", "subscribedUsers", "tags", "comments"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Indexed
@@ -79,4 +80,7 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     @IndexedEmbedded
     private Set<Tag> tags;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comments;
 }

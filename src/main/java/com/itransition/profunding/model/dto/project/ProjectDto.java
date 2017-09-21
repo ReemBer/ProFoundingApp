@@ -1,6 +1,7 @@
 package com.itransition.profunding.model.dto.project;
 
 import com.itransition.profunding.model.db.ProjectStatus;
+import com.itransition.profunding.model.dto.CommentDto;
 import com.itransition.profunding.model.dto.FinancialGoalDto;
 import com.itransition.profunding.model.dto.TagDto;
 import lombok.AllArgsConstructor;
@@ -38,4 +39,5 @@ public class ProjectDto {
     private Long currentSum;
     private Long userId;
     private Set<TagDto> tags;
+    private List<CommentDto> comments;
 }

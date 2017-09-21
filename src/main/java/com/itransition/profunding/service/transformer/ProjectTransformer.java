@@ -23,11 +23,13 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final TagTransformer tagTransformer;
+    private final CommentTransformer commentTransformer;
 
     @Override
     public ProjectDto buildDto(Project project) {
         ProjectDto projectDto = modelMapper.map(project, ProjectDto.class);
         projectDto.setLeftDays(setLeftDays(project.getCompletionDate()));
+        projectDto.setComments(commentTransformer.buildDtoList(project.getComments()));
         return projectDto;
     }
 
@@ -39,6 +41,9 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
         project.setCreatorUser(userRepository.findOne(projectDto.getUserId()));
         project.setSubscribedUsers(new HashSet<>());
         setProjectTags(project, projectDto);
+        if (projectDto.getComments() != null) {
+            project.setComments(commentTransformer.parseDtoList(projectDto.getComments()));
+        }
         return project;
     }
 

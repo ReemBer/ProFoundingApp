@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"projects", "followedProjects"})
+@EqualsAndHashCode(exclude = {"projects", "followedProjects", "comments"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -51,5 +52,6 @@ public class User {
     @ManyToMany(mappedBy = "subscribedUsers",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Set<Project> followedProjects;
 
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comments;
 }
