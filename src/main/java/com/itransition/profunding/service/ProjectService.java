@@ -17,6 +17,7 @@ public interface ProjectService {
     List<ProjectDto> getMyProjects();
     List<ProjectDto> getMyFollowedProjects();
     Boolean createProject(ProjectDto projectDto);
+    Boolean updateProject(ProjectDto projectDto);
     Map<String, List<ProjectPreviewDto>> getMainPageProjects();
     Map<String, Object> getNewProjectsNextPage();
     Map<String, Object> getSuccessProjectsNextPage();

@@ -52,6 +52,12 @@ public class ProjectController {
         return projectService.createProject(projectDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER', 'ROLE_NO_PROOFED_USER')")
+    @PostMapping(value = "/projects/update")
+    public Boolean updateProject(@RequestBody ProjectDto projectDto) {
+        return projectService.updateProject(projectDto);
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
     @GetMapping(value = "/projects/my")
     public List<ProjectDto> getMyProjects() {

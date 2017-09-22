@@ -78,6 +78,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public Boolean updateProject(ProjectDto projectDto) {
+        return false;
+    }
+
+    @Override
     public Map<String, List<ProjectPreviewDto>> getMainPageProjects() {
         Map<String, List<ProjectPreviewDto>> result = new HashMap<>();
         List<Project> successfulProjects = projectRepository.findAllByStatusOrderByIdDesc(
