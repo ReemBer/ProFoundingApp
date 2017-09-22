@@ -21,50 +21,57 @@ import java.util.Map;
  */
 @RestController
 @CrossOrigin
+@RequestMapping(value = "/projects")
 @RequiredArgsConstructor
 public class ProjectController {
 
     private final ProjectService projectService;
 
-    @GetMapping(value = "/projects/{projectId}")
+    @GetMapping(value = "/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
         return projectService.getFullProject(projectId);
     }
 
-    @GetMapping(value = "/projects/main_page")
+    @GetMapping(value = "/main_page")
     public Map<String, List<ProjectPreviewDto>> mainPageProjects() {
         return projectService.getMainPageProjects();
     }
 
-    @GetMapping(value = "/projects/success")
+    @GetMapping(value = "/success")
     public Map<String, Object> getSuccessProjectsNextPage() {
         return projectService.getSuccessProjectsNextPage();
     }
 
-    @GetMapping(value = "/projects/new")
+    @GetMapping(value = "/new")
     public Map<String, Object> getNewProjectsNextPage() {
         return projectService.getNewProjectsNextPage();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER', 'ROLE_NO_PROOFED_USER')")
-    @PostMapping(value = "/projects/create")
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/create")
     public Boolean createProject(@RequestBody ProjectDto projectDto) {
         return projectService.createProject(projectDto);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
-    @GetMapping(value = "/projects/my")
+    @GetMapping(value = "/my")
     public List<ProjectDto> getMyProjects() {
         return projectService.getMyProjects();
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/projects/followed")
+    @GetMapping("/followed")
     public List<ProjectDto> getFollowedProjects() {
         return projectService.getMyFollowedProjects();
     }
 
-    @GetMapping(value = "/projects/{searchQuery}/{offset}")
+
+    @PostMapping("/update")
+    public Boolean updateProject(@RequestBody ProjectDto projectDto) {
+        return projectService.updateProject(projectDto);
+    }
+
+    @GetMapping(value = "/{searchQuery}/{offset}")
     public List<ProjectDto> fulltextSearch(@PathVariable String searchQuery, @PathVariable int offset) {
         return null;
     }

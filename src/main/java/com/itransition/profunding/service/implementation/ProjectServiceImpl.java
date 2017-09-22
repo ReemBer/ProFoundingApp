@@ -70,11 +70,24 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Boolean createProject(ProjectDto projectDto) {
-        boolean success = projectRepository.save(projectTransformer.parseDto(projectDto)) != null;
+        boolean success = saveProject(projectDto);
         if (!success) {
             throw new ProjectSavingException("Error through saving Project to database.");
         }
         return true;
+    }
+
+    @Override
+    public Boolean updateProject(ProjectDto projectDto) {
+        boolean success = saveProject(projectDto);
+        if (!success) {
+            throw new ProjectSavingException("Error through saving Project to database.");
+        }
+        return true;
+    }
+
+    private boolean saveProject(ProjectDto projectDto) {
+        return projectRepository.save(projectTransformer.parseDto(projectDto)) != null;
     }
 
     @Override
@@ -95,9 +108,9 @@ public class ProjectServiceImpl implements ProjectService {
     public Map<String, Object> getNewProjectsNextPage() {
         Map<String, Object> result = new HashMap<>();
         newProjectCurrentPage = projectRepository.findAllByOrderByIdDesc(newProjects);
+        result.put("page", projectPreviewTransformer.buildDtoList(newProjectCurrentPage.getContent()));
         newProjects = isLastPageCheck(newProjectCurrentPage, result) ?
                 newProjects.first() : newProjects.next();
-        result.put("page", projectPreviewTransformer.buildDtoList(newProjectCurrentPage.getContent()));
         return result;
     }
 
@@ -113,7 +126,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private boolean isLastPageCheck(Page<Project> page, Map<String, Object> result) {
-        result.put("last", page.hasNext());
+        result.put("last", !page.hasNext());
         return !page.hasNext();
     }
 }
