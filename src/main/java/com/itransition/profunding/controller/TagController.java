@@ -21,9 +21,4 @@ public class TagController {
     public List<TagDto> getTags() {
         return  tagService.getAllTags();
     }
-
-    @GetMapping(value = "/search/{tagName}")
-    public Map<String, Object> findProjectsByTags(@PathVariable String tagName) {
-        return tagService.findProjectsNextPageByTag(tagName);
-    }
 }

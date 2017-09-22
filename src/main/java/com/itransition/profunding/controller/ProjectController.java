@@ -6,6 +6,7 @@ import com.itransition.profunding.model.dto.project.ProjectDto;
 import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
 import com.itransition.profunding.repository.fulltextSearch.FulltextRepository;
 import com.itransition.profunding.service.ProjectService;
+import com.itransition.profunding.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ import java.util.Map;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final TagService tagService;
 
     @GetMapping(value = "/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
@@ -47,13 +49,18 @@ public class ProjectController {
         return projectService.getNewProjectsNextPage();
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/tag/{tagName}")
+    public Map<String, Object> getProjectsByTags(@PathVariable String tagName) {
+        return tagService.findProjectsNextPageByTag(tagName);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
     @PostMapping(value = "/create")
     public Boolean createProject(@RequestBody ProjectDto projectDto) {
         return projectService.createProject(projectDto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER', 'ROLE_NO_PROOFED_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
     @PostMapping(value = "/projects/update")
     public Boolean updateProject(@RequestBody ProjectDto projectDto) {
         return projectService.updateProject(projectDto);
@@ -69,12 +76,6 @@ public class ProjectController {
     @GetMapping("/followed")
     public List<ProjectDto> getFollowedProjects() {
         return projectService.getMyFollowedProjects();
-    }
-
-
-    @PostMapping("/update")
-    public Boolean updateProject(@RequestBody ProjectDto projectDto) {
-        return projectService.updateProject(projectDto);
     }
 
     @GetMapping(value = "/{searchQuery}/{offset}")
