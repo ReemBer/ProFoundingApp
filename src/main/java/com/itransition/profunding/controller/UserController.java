@@ -4,6 +4,7 @@ import com.itransition.profunding.model.dto.ProfileDto;
 import com.itransition.profunding.model.dto.UserImageOnlyDto;
 import com.itransition.profunding.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,6 +25,7 @@ public class UserController {
         return dto;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/users/update")
     public Boolean updateUserImage(@RequestBody UserImageOnlyDto userImageOnlyDto) {
         return userService.updateUser(userImageOnlyDto);
