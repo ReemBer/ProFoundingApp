@@ -30,7 +30,6 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final TagService tagService;
-    private final RatingService ratingService;
 
     @GetMapping(value = "/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
@@ -79,12 +78,6 @@ public class ProjectController {
     @GetMapping("/followed")
     public List<ProjectDto> getFollowedProjects() {
         return projectService.getMyFollowedProjects();
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/rate")
-    public RatingDto rate(@RequestBody RatingDto ratingDto) {
-        return ratingService.rate(ratingDto);
     }
 
     @GetMapping(value = "/{searchQuery}/{offset}")
