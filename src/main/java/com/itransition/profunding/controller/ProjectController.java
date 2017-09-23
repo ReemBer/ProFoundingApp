@@ -62,7 +62,7 @@ public class ProjectController {
         return projectService.createProject(projectDto);
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROOFED_USER')")
     @PostMapping(value = "/update")
     public Boolean updateProject(@RequestBody ProjectDto projectDto) {
         return projectService.updateProject(projectDto);
