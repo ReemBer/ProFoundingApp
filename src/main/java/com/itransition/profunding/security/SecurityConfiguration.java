@@ -36,8 +36,9 @@ import java.security.SecureRandom;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String[] allowedPathsForPost = {"/login", "/registration"};
-    private static final String[] allowedPathsForGet = {"/login", "/tags/*",
-            "/registration/*", "/profile/*", "/projects/**"};
+    private static final String[] allowedPathsForGet = {"/tags/all",
+            "/registration/*", "/profile/*", "/projects/main_page",
+            "/projects/*", "/projects/tag/*"};
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     private final UserDetailsService userDetailsService;
@@ -66,8 +67,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests() // TODO: 07.09.2017 configure it
+                .authorizeRequests()
                     .antMatchers("/**").permitAll()
+                    .antMatchers("/projects/create").hasAnyRole("ROLE_ADMIN", "ROLE_PROOFED_USER")
+                    .antMatchers("/projects/update").hasAnyRole("ROLE_ADMIN", "ROLE_PROOFED_USER")
+                    .antMatchers("/projects/my").hasAnyRole("ROLE_ADMIN", "ROLE_PROOFED_USER")
+                    .antMatchers("/projects/followed").authenticated()
+                    .antMatchers("/comments/create").authenticated()
+                    .antMatchers("/me").authenticated()
+                    .antMatchers("/rating/check/*").authenticated()
+                    .antMatchers("/rating/rate").authenticated()
+                    .antMatchers("/users/update").authenticated()
                 .and()
                 .csrf().disable()
                 .addFilterAfter(new JwtAuthenticationFilter(authenticationManagerBean()),
