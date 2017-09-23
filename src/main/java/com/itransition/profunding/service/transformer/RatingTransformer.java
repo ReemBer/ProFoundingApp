@@ -2,6 +2,8 @@ package com.itransition.profunding.service.transformer;
 
 import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.db.ProjectRating;
+import com.itransition.profunding.model.db.RatingId;
+import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.RatingDto;
 import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.UserRepository;
@@ -25,11 +27,10 @@ public class RatingTransformer extends TransformerService<ProjectRating, RatingD
 
     @Override
     public ProjectRating parseDto(RatingDto dto) {
-        ProjectRating rating = new ProjectRating();
-        rating.setAmount(dto.getAmount());
-        rating.setUser(userRepository.findOne(dto.getUserId()));
-        rating.setProject(projectRepository.findOne(dto.getProjectId()));
-        return rating;
+        User user = userRepository.findOne(dto.getUserId());
+        Project project = projectRepository.findOne(dto.getProjectId());
+        RatingId ratingId = new RatingId(user, project);
+        return new ProjectRating(ratingId, dto.getAmount());
     }
 
     @Override
