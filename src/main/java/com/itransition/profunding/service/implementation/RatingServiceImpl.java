@@ -1,13 +1,19 @@
 package com.itransition.profunding.service.implementation;
 
+import com.itransition.profunding.model.db.Project;
 import com.itransition.profunding.model.db.ProjectRating;
+import com.itransition.profunding.model.db.RatingId;
+import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.model.dto.RatingDto;
 import com.itransition.profunding.repository.ProjectRepository;
 import com.itransition.profunding.repository.RatingRepository;
 import com.itransition.profunding.repository.UserRepository;
+import com.itransition.profunding.security.SecurityHelper;
+import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.service.RatingService;
 import com.itransition.profunding.service.transformer.RatingTransformer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,13 +32,19 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public RatingDto rate(RatingDto dto) {
-        ProjectRating rating = new ProjectRating();
-        rating.setProject(projectRepository.getOne(dto.getProjectId()));
-        rating.setUser(userRepository.getOne(dto.getUserId()));
-        rating.setAmount(dto.getAmount());
-        rating.getUser().getRatings().add(rating);
-        rating.getProject().getRatings().add(rating);
+        User user = userRepository.findOne(dto.getUserId());
+        Project project = projectRepository.findOne(dto.getProjectId());
+        RatingId ratingId = new RatingId(user, project);
+        ProjectRating rating = new ProjectRating(ratingId, dto.getAmount());
         ratingRepository.save(rating);
         return ratingTransformer.buildDto(rating);
+    }
+
+    @Override
+    public Boolean checkEnable(Long projectId) {
+        JwtUserDetails userDetails = (JwtUserDetails) SecurityHelper.getAuthenticationWithCheck().getDetails();
+        User user = userRepository.findOne(userDetails.getId());
+        Project project = projectRepository.findOne(projectId);
+        return ratingRepository.findOne(new RatingId(user, project)) == null;
     }
 }

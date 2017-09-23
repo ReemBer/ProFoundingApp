@@ -9,4 +9,5 @@ import com.itransition.profunding.model.dto.RatingDto;
  */
 public interface RatingService {
     RatingDto rate(RatingDto dto);
+    Boolean checkEnable(Long projectId);
 }

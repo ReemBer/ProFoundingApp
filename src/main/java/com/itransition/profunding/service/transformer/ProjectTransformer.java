@@ -1,11 +1,16 @@
 package com.itransition.profunding.service.transformer;
 
+import com.itransition.profunding.exception.auth.AuthenticationFailedException;
 import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.project.ProjectDto;
+import com.itransition.profunding.repository.RatingRepository;
 import com.itransition.profunding.repository.TagRepository;
 import com.itransition.profunding.repository.UserRepository;
+import com.itransition.profunding.security.SecurityHelper;
+import com.itransition.profunding.security.model.JwtUserDetails;
 import com.itransition.profunding.service.TransformerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.Period;
@@ -28,6 +33,7 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
     @Override
     public ProjectDto buildDto(Project project) {
         ProjectDto projectDto = modelMapper.map(project, ProjectDto.class);
+        projectDto.setRating(calculateTotalRating(project.getRatings()));
         projectDto.setLeftDays(setLeftDays(project.getCompletionDate()));
         projectDto.setComments(commentTransformer.buildDtoList(project.getComments()));
         return projectDto;
@@ -45,6 +51,17 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
             project.setComments(commentTransformer.parseDtoList(projectDto.getComments()));
         }
         return project;
+    }
+
+    private double calculateTotalRating(List<ProjectRating> ratings) {
+        double result = 0.;
+        if(ratings != null && ratings.size() != 0) {
+            for (ProjectRating rating : ratings) {
+                result += rating.getAmount();
+            }
+            result /= ratings.size();
+        }
+        return result;
     }
 
     private void mapFinancialGoals(Project project) {
