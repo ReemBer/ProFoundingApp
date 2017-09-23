@@ -2,10 +2,12 @@ package com.itransition.profunding.controller;
 
 import com.itransition.profunding.exception.repository.ProjectSavingException;
 import com.itransition.profunding.model.dto.ErrorInfoDto;
+import com.itransition.profunding.model.dto.RatingDto;
 import com.itransition.profunding.model.dto.project.ProjectDto;
 import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
 import com.itransition.profunding.repository.fulltextSearch.FulltextRepository;
 import com.itransition.profunding.service.ProjectService;
+import com.itransition.profunding.service.RatingService;
 import com.itransition.profunding.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +30,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final TagService tagService;
+    private final RatingService ratingService;
 
     @GetMapping(value = "/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
@@ -76,6 +79,12 @@ public class ProjectController {
     @GetMapping("/followed")
     public List<ProjectDto> getFollowedProjects() {
         return projectService.getMyFollowedProjects();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/rate")
+    public RatingDto rate(@RequestBody RatingDto ratingDto) {
+        return ratingService.rate(ratingDto);
     }
 
     @GetMapping(value = "/{searchQuery}/{offset}")

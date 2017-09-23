@@ -1,9 +1,6 @@
 package com.itransition.profunding.repository;
 
-import com.itransition.profunding.model.db.Project;
-import com.itransition.profunding.model.db.ProjectStatus;
-import com.itransition.profunding.model.db.Tag;
-import com.itransition.profunding.model.db.User;
+import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,4 +30,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Page<Project> findAllByStatusOrderByIdDesc(ProjectStatus status, Pageable pageable);
 
     Page<Project> findAllByTagsOrderByIdDesc(Set<Tag> tags, Pageable pageable);
+
+    @Query("select p.ratings from Project p where p.id = :idParam")
+    List<ProjectRating> findProjectRatingsById(@Param("idParam") Long idParam);
 }
