@@ -14,25 +14,50 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "project_ratings")
-@Getter
-@Setter
+@AssociationOverrides({
+        @AssociationOverride(name = "id.user", joinColumns = @JoinColumn(name = "user_id")),
+        @AssociationOverride(name = "id.project", joinColumns = @JoinColumn(name = "project_id"))
+})
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectRating {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "rating_id")
-    private Long id;
-
-    @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "project_id")
-    private Project project;
+    private RatingId id;
 
     @Column(name = "amount")
     private int amount;
+
+    @EmbeddedId
+    public RatingId getId() {
+        return id;
+    }
+
+    public void setId(RatingId id) {
+        this.id = id;
+    }
+
+    @Transient
+    public User getUser() {
+        return this.id.getUser();
+    }
+
+    @Transient
+    public Project getProject() {
+        return this.id.getProject();
+    }
+
+    public void setUser(User user) {
+        this.id.setUser(user);
+    }
+    public void setProject(Project project) {
+        this.id.setProject(project);
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }
