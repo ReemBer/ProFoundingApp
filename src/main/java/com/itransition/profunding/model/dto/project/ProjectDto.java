@@ -34,6 +34,7 @@ public class ProjectDto {
     private String content;
     private String image;
     private String status;
+    private Double rating;
     private List<FinancialGoalDto> financialGoals;
     private Long totalCost;
     private Long currentSum;
