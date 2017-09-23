@@ -1,12 +1,12 @@
 package com.itransition.profunding.service.implementation;
 
 import com.itransition.profunding.exception.repository.ProjectSavingException;
-import com.itransition.profunding.model.db.Project;
-import com.itransition.profunding.model.db.ProjectStatus;
-import com.itransition.profunding.model.db.User;
+import com.itransition.profunding.model.db.*;
 import com.itransition.profunding.model.dto.project.ProjectDto;
 import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
+import com.itransition.profunding.repository.FinancialGoalRepository;
 import com.itransition.profunding.repository.ProjectRepository;
+import com.itransition.profunding.repository.TagRepository;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.SecurityHelper;
 import com.itransition.profunding.security.model.JwtUserDetails;
@@ -20,10 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author v.tarasevich
@@ -42,6 +39,8 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectTransformer projectTransformer;
     private final UserRepository userRepository;
     private final ProjectPreviewTransformer projectPreviewTransformer;
+    private final FinancialGoalRepository financialGoalRepository;
+    private final TagRepository tagRepository;
 
     private Pageable newProjects = new PageRequest(0, PAGE_SIZE);
     private Pageable successProjects = new PageRequest(0, PAGE_SIZE);
@@ -79,11 +78,26 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Boolean updateProject(ProjectDto projectDto) {
-        boolean success = saveProject(projectDto);
-        if (!success) {
-            throw new ProjectSavingException("Error through saving Project to database.");
-        }
+        Project project = projectTransformer.parseDto(projectDto);
+        project.setId(projectDto.getId());
+        clearFinancialGoals(project);
+        projectRepository.saveAndFlush(project);
+        clearUnusedTags();
         return true;
+    }
+
+    private void clearFinancialGoals(Project project) {
+        financialGoalRepository.deleteAllByRootProject_Id(project.getId());
+        financialGoalRepository.flush();
+    }
+
+    private void clearUnusedTags() {
+        List<Tag> tags = tagRepository.findAll();
+        for(Tag tag : tags) {
+            if (tag.getProjects() == null || tag.getProjects().size() == 0) {
+                tagRepository.delete(tag);
+            }
+        }
     }
 
     private boolean saveProject(ProjectDto projectDto) {

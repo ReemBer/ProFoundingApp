@@ -25,7 +25,8 @@ public class Tag {
     @Column(name = "tag_id")
     private Long id;
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST},
+            fetch = FetchType.LAZY)
     private Set<Project> projects;
 
     @Column(name = "tag_name")

@@ -22,4 +22,5 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     @Query("select t.projects from Tag t where t.tagName = :tagNameParam order by t.id desc")
     Page<Project> findTagedProjectsOrderByIdDesc(@Param("tagNameParam") String tagNameParam, Pageable pageable);
+
 }
