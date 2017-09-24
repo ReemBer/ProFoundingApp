@@ -20,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
+import static com.itransition.profunding.util.AppConstants.PAGE_SIZE;
+
 //import static com.itransition.profunding.util.AppConstants.PAGE_SIZE;
 
 @Service
@@ -31,7 +33,7 @@ public class TagServiceImpl implements TagService{
     private final TagRepository tagRepository;
     private final TagTransformer tagTransformer;
 
-    Pageable projectsPageable = new PageRequest(0, /*PAGE_SIZE*/ 12);
+    Pageable projectsPageable = new PageRequest(0, PAGE_SIZE);
     Page<Project> projectsPage;
 
     @Override

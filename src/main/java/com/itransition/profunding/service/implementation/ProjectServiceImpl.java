@@ -14,6 +14,7 @@ import com.itransition.profunding.service.ProjectService;
 import com.itransition.profunding.service.transformer.ProjectPreviewTransformer;
 import com.itransition.profunding.service.transformer.ProjectTransformer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+
+import static com.itransition.profunding.util.AppConstants.PAGE_SIZE;
 
 /**
  * @author v.tarasevich
@@ -33,7 +36,6 @@ import java.util.*;
 public class ProjectServiceImpl implements ProjectService {
 
     private static final int FIRST_PAGE_SIZE = 4;
-    private static final int PAGE_SIZE = 12;
 
     private final ProjectRepository projectRepository;
     private final ProjectTransformer projectTransformer;
