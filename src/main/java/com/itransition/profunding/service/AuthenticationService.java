@@ -2,7 +2,7 @@ package com.itransition.profunding.service;
 
 import com.itransition.profunding.model.dto.auth.LoginRequestDto;
 import com.itransition.profunding.model.dto.auth.LoginResponseDto;
-import com.itransition.profunding.model.dto.UserDto;
+import com.itransition.profunding.model.dto.user.UserDto;
 
 /**
  * @author v.tarasevich

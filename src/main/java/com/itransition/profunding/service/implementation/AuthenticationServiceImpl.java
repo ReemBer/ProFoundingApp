@@ -5,7 +5,7 @@ import com.itransition.profunding.exception.auth.UserNotFoundException;
 import com.itransition.profunding.model.dto.auth.AuthUserDto;
 import com.itransition.profunding.model.dto.auth.LoginRequestDto;
 import com.itransition.profunding.model.dto.auth.LoginResponseDto;
-import com.itransition.profunding.model.dto.UserDto;
+import com.itransition.profunding.model.dto.user.UserDto;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.SecurityHelper;
 import com.itransition.profunding.security.model.JwtUserDetails;

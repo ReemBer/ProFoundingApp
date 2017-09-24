@@ -1,4 +1,4 @@
-package com.itransition.profunding.model.dto;
+package com.itransition.profunding.model.dto.user;
 
 import com.itransition.profunding.model.dto.project.ProjectDto;
 import lombok.AllArgsConstructor;

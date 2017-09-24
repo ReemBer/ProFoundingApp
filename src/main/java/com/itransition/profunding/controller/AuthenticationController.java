@@ -6,7 +6,7 @@ import com.itransition.profunding.exception.registration.UnconfirmedUserExceptio
 import com.itransition.profunding.model.dto.ErrorInfoDto;
 import com.itransition.profunding.model.dto.auth.LoginRequestDto;
 import com.itransition.profunding.model.dto.auth.LoginResponseDto;
-import com.itransition.profunding.model.dto.UserDto;
+import com.itransition.profunding.model.dto.user.UserDto;
 import com.itransition.profunding.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,6 @@
 package com.itransition.profunding.model.dto;
 
+import com.itransition.profunding.model.dto.user.UserViewDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
