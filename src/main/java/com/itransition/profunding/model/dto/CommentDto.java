@@ -19,5 +19,5 @@ public class CommentDto {
     private Date dateCreated;
     private Long projectId;
     private String content;
-    private UserDto user;
+    private UserViewDto user;
 }
