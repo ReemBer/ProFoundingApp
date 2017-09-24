@@ -1,12 +1,15 @@
 package com.itransition.profunding.repository;
 
 import com.itransition.profunding.model.db.User;
+import com.itransition.profunding.model.db.UserRole;
 import com.itransition.profunding.model.dto.auth.AuthUserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author v.tarasevich
@@ -29,4 +32,16 @@ public interface UserRepository extends JpaRepository<User, Long>{
     void updateUserById(@Param("newImage") String image, @Param("idParam") Long id);
 
     User findById(Long id);
+
+    @Query("select u from User u where not u.role = ?1")
+    List<User> findAllByRoleNotContainingOrderByIdDesc(UserRole role);
+
+    @Modifying
+    @Query("update User u set u.isBlocked = ?1 where u.id = ?2")
+    void setAdminChanges(Boolean isBlocked, Long id);
+
+    @Query("update User u set u.role = ?1 where u.id = ?2")
+    User setAsConfirmed(UserRole role, Long id);
+
+    int deleteById(Long id);
 }

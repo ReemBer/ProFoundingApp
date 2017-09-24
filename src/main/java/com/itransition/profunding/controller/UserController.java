@@ -30,5 +30,4 @@ public class UserController {
     public Boolean updateUserImage(@RequestBody UserImageOnlyDto userImageOnlyDto) {
         return userService.updateUser(userImageOnlyDto);
     }
-
 }

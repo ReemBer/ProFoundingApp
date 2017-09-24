@@ -46,6 +46,12 @@ public class User {
     @Column(name = "last_login_date")
     private String date;
 
+    @Column
+    private Boolean isSendConfirm;
+
+    @Column
+    private Boolean isBlocked;
+
     @OneToMany(mappedBy = "creatorUser",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Project> projects;
 
