@@ -8,6 +8,8 @@ import com.itransition.profunding.service.transformer.CommentTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService{
@@ -19,5 +21,14 @@ public class CommentServiceImpl implements CommentService{
     public boolean saveComment(CommentDto commentDto) {
         Comment check = commentRepository.save(commentTransformer.parseDto(commentDto));
         return check != null;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteComment(CommentDto commentDto) {
+        return commentRepository.deleteCommentByProject_IdAndContentAndUser_IdAndDateCreated(
+                commentDto.getProjectId(), commentDto.getContent(), commentDto.getUser().getId(),
+                commentDto.getDateCreated()
+        ) != 0;
     }
 }

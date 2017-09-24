@@ -19,4 +19,10 @@ public class CommentController {
     public Boolean createComment(@RequestBody CommentDto commentDto) {
         return commentService.saveComment(commentDto);
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/delete")
+    public Boolean deleteComment(@RequestBody CommentDto commentDto) {
+        return commentService.deleteComment(commentDto);
+    }
 }
