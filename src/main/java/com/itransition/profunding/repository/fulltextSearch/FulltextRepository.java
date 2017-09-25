@@ -25,12 +25,10 @@ import java.util.Set;
 @Transactional
 public class FulltextRepository {
 
-    private final int MAX_RESULTS = 10;
-
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<Project> fullTextSearch(String searchQuery, int offset) {
+    public List<Project> fullTextSearch(String searchQuery) {
         if("".equals(searchQuery)) {
             return Collections.emptyList();
         }
@@ -38,19 +36,17 @@ public class FulltextRepository {
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
                 .forEntity(com.itransition.profunding.model.db.Project.class).get();
         Query jpaQuery = fullTextEntityManager.createFullTextQuery(createQuery(queryBuilder, searchQuery), Project.class);
-        jpaQuery.setFirstResult(offset);
-        jpaQuery.setMaxResults(MAX_RESULTS);
         @SuppressWarnings("unchecked")
         List<Project> result = jpaQuery.getResultList();
         return result;
     }
 
     private org.apache.lucene.search.Query createQuery(QueryBuilder queryBuilder, String searchQuery) {
-        return queryBuilder.keyword().onFields("title",
+        return queryBuilder.keyword().wildcard().onFields("title",
                                                         "description",
                                                         "content",
                                                         "financialGoals.title",
                                                         "tags.tagName")
-                .matching(searchQuery).createQuery();
+                .matching(searchQuery + '*').createQuery();
     }
 }
