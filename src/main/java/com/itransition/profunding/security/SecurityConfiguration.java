@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String[] allowedPathsForPost = {"/login", "/registration"};
     private static final String[] allowedPathsForGet = {"/tags/all",
             "/registration/*", "/profile/*", "/projects/main_page",
-            "/projects/*", "/projects/tag/*"};
+            "/projects/*", "/projects/tag/*", "/projects/search/*"};
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     private final UserDetailsService userDetailsService;

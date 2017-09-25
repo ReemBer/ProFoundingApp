@@ -82,6 +82,7 @@ public class Project {
     private Set<Tag> tags;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @IndexedEmbedded
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "id.project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

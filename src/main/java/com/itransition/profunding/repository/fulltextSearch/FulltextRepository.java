@@ -46,7 +46,9 @@ public class FulltextRepository {
                                                         "description",
                                                         "content",
                                                         "financialGoals.title",
-                                                        "tags.tagName")
-                .matching(searchQuery + '*').createQuery();
+                                                        "tags.tagName",
+                                                        "comments.content",
+                                                        "comments.user.username")
+                .matching(searchQuery + "*").createQuery();
     }
 }
