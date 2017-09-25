@@ -25,12 +25,14 @@ public class JwtUserDetails implements UserDetails {
     private Long id;
     private String username;
     private String password;
+    private boolean isBlocked;
     private Set<GrantedAuthority> grantedAuthorities;
 
     public JwtUserDetails(User user) {
         this.id =  user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.isBlocked = user.getIsBlocked();
         this.grantedAuthorities = new HashSet<>();
         this.grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().name()));
     }
@@ -57,7 +59,7 @@ public class JwtUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isBlocked;
     }
 
     @Override
