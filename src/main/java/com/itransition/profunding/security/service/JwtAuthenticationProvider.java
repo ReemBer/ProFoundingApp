@@ -1,5 +1,6 @@
 package com.itransition.profunding.security.service;
 
+import com.itransition.profunding.exception.auth.JwtAccountLockedException;
 import com.itransition.profunding.model.db.User;
 import com.itransition.profunding.repository.UserRepository;
 import com.itransition.profunding.security.exception.ExpiredTokenAuthenticationException;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.AccountLockedException;
 import java.util.Objects;
 
 /**
@@ -36,7 +38,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         validateTokenPayload(tokenPayload);
         User user = this.userRepository.findOne(tokenPayload.getUserId());
         checkNotNull(user, "Token does not contain a user id.");
-        return new JwtAuthenticationToken(new JwtUserDetails(user));
+        return new JwtAuthenticationToken(checkAccountLocked(new JwtUserDetails(user)));
     }
 
     private TokenPayload getAndDeserializeToken(Authentication authentication) {
@@ -47,6 +49,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     private void validateTokenPayload(TokenPayload tokenPayload) {
         checkIsExpired(tokenPayload.getExpiration());
         checkNotNull(tokenPayload.getUserId(), "Token does not contain a user id.");
+    }
+
+    private JwtUserDetails checkAccountLocked(JwtUserDetails userDetails) {
+        if (!userDetails.isAccountNonLocked()) {
+            throw new JwtAccountLockedException("This account are blocked.");
+        }
+        return userDetails;
     }
 
     private void checkNotNull(Object value, String badCauseMessage) {
