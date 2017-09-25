@@ -6,6 +6,7 @@ import com.itransition.profunding.model.dto.RatingDto;
 import com.itransition.profunding.model.dto.project.ProjectDto;
 import com.itransition.profunding.model.dto.project.ProjectPreviewDto;
 import com.itransition.profunding.repository.fulltextSearch.FulltextRepository;
+import com.itransition.profunding.service.FulltextSearchService;
 import com.itransition.profunding.service.ProjectService;
 import com.itransition.profunding.service.RatingService;
 import com.itransition.profunding.service.TagService;
@@ -30,6 +31,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final TagService tagService;
+    private final FulltextSearchService fulltextSearchService;
 
     @GetMapping(value = "/{projectId}")
     public ProjectDto getProject(@PathVariable Long projectId) {
@@ -80,9 +82,9 @@ public class ProjectController {
         return projectService.getMyFollowedProjects();
     }
 
-    @GetMapping(value = "/{searchQuery}/{offset}")
-    public List<ProjectDto> fulltextSearch(@PathVariable String searchQuery, @PathVariable int offset) {
-        return null;
+    @GetMapping(value = "/search/{searchQuery}")
+    public List<ProjectPreviewDto> fulltextSearch(@PathVariable String searchQuery) {
+        return fulltextSearchService.search(searchQuery);
     }
 
     @ExceptionHandler(value = ProjectSavingException.class)
