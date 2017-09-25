@@ -86,4 +86,7 @@ public class Project {
 
     @OneToMany(mappedBy = "id.project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectRating> ratings;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<Payment> payments;
 }

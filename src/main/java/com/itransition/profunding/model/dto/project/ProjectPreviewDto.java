@@ -26,5 +26,6 @@ public class ProjectPreviewDto {
     private String description;
     private String image;
     private Long totalCost;
+    private Long currentSum;
     private Long leftDays;
 }

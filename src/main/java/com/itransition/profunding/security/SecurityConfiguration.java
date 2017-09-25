@@ -78,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/rating/check/*").authenticated()
                     .antMatchers("/rating/rate").authenticated()
                     .antMatchers("/users/update").authenticated()
-                    .antMatchers("/admin/*").hasRole("ROLE_ADMIN")
+                    .antMatchers("/admin/*").hasAnyRole("ROLE_ADMIN")
                 .and()
                 .csrf().disable()
                 .addFilterAfter(new JwtAuthenticationFilter(authenticationManagerBean()),

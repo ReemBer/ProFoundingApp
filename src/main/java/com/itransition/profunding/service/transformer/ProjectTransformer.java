@@ -35,6 +35,7 @@ public class ProjectTransformer extends TransformerService<Project, ProjectDto> 
         ProjectDto projectDto = modelMapper.map(project, ProjectDto.class);
         projectDto.setRating(calculateTotalRating(project.getRatings()));
         projectDto.setLeftDays(setLeftDays(project.getCompletionDate()));
+        projectDto.setCountOfPayments(project.getPayments().size());
         return projectDto;
     }
 
